@@ -7,13 +7,13 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/img_lens_temp"
-        android:title="@string/title_lens" />
+        android:id="@+id/navigation_report"
+        android:icon="@drawable/img_report_temp"
+        android:title="@string/title_report" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/img_stat_temp"
+        android:id="@+id/navigation_tasks"
+        android:icon="@drawable/img_task_temp"
         android:title="@string/title_tasks" />
 
     <item

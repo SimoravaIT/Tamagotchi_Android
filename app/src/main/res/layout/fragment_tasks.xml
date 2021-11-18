@@ -10,14 +10,13 @@
         android:id="@+id/textList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
         android:text="@string/HeaderList"
+        android:textAlignment="center"
+        android:textSize="20sp"
         tools:ignore="MissingConstraints" />
-       <!-- app:layout_constraintBottom_toBottomOf="parent"
+    <!-- app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"  />-->
@@ -26,16 +25,26 @@
         android:id="@+id/ListView_tasks"
         android:layout_width="300dp"
         android:layout_height="450dp"
+        android:layout_below="@+id/textList"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:choiceMode="singleChoice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:choiceMode="singleChoice"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textList"
 
         />
+
+    <Button
+        android:id="@+id/button_populate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:text="refresh"
+        app:layout_constraintBottom_toTopOf="@+id/ListView_tasks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

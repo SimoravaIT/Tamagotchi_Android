@@ -1,4 +1,4 @@
-package com.example.androidapp.ui.home;
+package com.example.androidapp.ui.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,22 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.androidapp.R;
-import com.example.androidapp.databinding.FragmentHomeBinding;
+import com.example.androidapp.databinding.FragmentSettingBinding;
 
-public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+public class SettingsFragment extends Fragment {
+
+
+    private FragmentSettingBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        final TextView textView = binding.textHome;
-        textView.setText("this is Home fragment");
 
+        final TextView textView = binding.textSettings;
+textView.setText("this is Settings Fragment");
         return root;
     }
 

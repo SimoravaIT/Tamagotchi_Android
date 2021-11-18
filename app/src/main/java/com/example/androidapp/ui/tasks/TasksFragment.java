@@ -17,24 +17,16 @@ import com.example.androidapp.databinding.FragmentTasksBinding;
 
 public class TasksFragment extends Fragment {
 
-    private TasksViewModel tasksViewModel;
+
     private FragmentTasksBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        tasksViewModel =
-                new ViewModelProvider(this).get(TasksViewModel.class);
 
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
         final TextView textView = binding.textNotifications;
-        tasksViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+       textView.setText("this is Task fragment");
         return root;
     }
 

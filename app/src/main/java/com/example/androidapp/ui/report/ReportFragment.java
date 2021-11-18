@@ -17,24 +17,17 @@ import com.example.androidapp.databinding.FragmentReportBinding;
 
 public class ReportFragment extends Fragment {
 
-    private ReportViewModel reportViewModel;
+
     private FragmentReportBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        reportViewModel =
-                new ViewModelProvider(this).get(ReportViewModel.class);
 
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
-        reportViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        textView.setText("this is Report Fragment");
         return root;
     }
 

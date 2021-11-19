@@ -16,10 +16,4 @@
         android:icon="@drawable/img_task_temp"
         android:title="@string/title_tasks" />
 
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/img_settings_temp"
-        android:title="@string/title_settings" />
-
-
 </menu>

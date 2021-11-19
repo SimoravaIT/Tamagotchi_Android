@@ -40,11 +40,12 @@
 
     <Button
         android:id="@+id/button_populate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="4dp"
-        android:text="refresh"
+        android:layout_width="66dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="52dp"
+        app:icon="@android:drawable/ic_popup_sync"
         app:layout_constraintBottom_toTopOf="@+id/ListView_tasks"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

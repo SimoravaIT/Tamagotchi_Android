@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,19 +43,17 @@ public class TasksFragment extends Fragment {
         View root = binding.getRoot();
         DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
-       // final TextView textView = binding.textNotifications;
-       //textView.setText("this is Task fragment");'
 
-        //temp creation of data
-        ArrayList<String> listOfTasks =new ArrayList<>();
-        for(int i=0;i<20;i++)
-            listOfTasks.add("Task numero"+i);
+        //listView definition
         final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
-        final ArrayAdapter <String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,listOfTasks);
-        myListView.setAdapter(adapter);
 
+        myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
+
+        //can be usefull for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
+
+        //temp button for refresh
         Button button = (Button) root.findViewById(R.id.button_populate);
 
         button.setOnClickListener(new View.OnClickListener()
@@ -61,33 +61,12 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                List<String> tasks_from_db = new LinkedList<String>();
-                // Get the readable database
-                String[] col={DatabaseHelper.KEY_NAME};
-                Cursor cursor = database.query(DatabaseHelper.TABLE_TASK_NAME,
-                        col, null, null, null,
-                        null, null );
-
-                // iterate over returned elements
-                cursor.moveToFirst();
-                for (int index=0; index < cursor.getCount(); index++){
-                    tasks_from_db.add(cursor.getString(0));
-                    cursor.moveToNext();
-                }
-                database.close();
-
-                Integer numTask = tasks_from_db.size();
-
-                button.setText(String.valueOf(numTask));
-
-                final ArrayAdapter <String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,tasks_from_db);
-                myListView.setAdapter(adapter);
-
-
+                myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
             }
         });
 
-//add datas to the db by force it
+
+    //add datas to the db by force it
       /*  DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -99,6 +78,30 @@ public class TasksFragment extends Fragment {
         database.insert(DatabaseHelper.TABLE_TASK_NAME, null, values);
 */
         return root;
+    }
+
+    private List<String> ObtainTasks() {
+        List<String> temp = new LinkedList<String>();
+        String[] col={DatabaseHelper.KEY_NAME};
+        DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());//not sure getContext, check
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        Cursor cursor = database.query(DatabaseHelper.TABLE_TASK_NAME,
+                col, null, null, null,
+                null, null );
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++) {
+            temp.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+
+            //verification of numbers
+            Integer numTask = temp.size();
+            Toast.makeText(getActivity(),"added" + String.valueOf(temp) + " tasks to the list",Toast.LENGTH_LONG).show();
+
+
+            database.close();
+            return temp;
+
     }
 
     @Override

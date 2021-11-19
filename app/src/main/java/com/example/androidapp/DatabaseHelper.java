@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -51,6 +52,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
+    public static void DeleteAllTasks(Context context){
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        int numberDeletedRecords =0;
+
+        numberDeletedRecords = database.delete(DatabaseHelper.TABLE_TASK_NAME, null, null);
+        database.close();
+
+        // display the number of deleted records with a Toast message
+        Toast.makeText(context,"Deleted " + String.valueOf(numberDeletedRecords) + " tasks ",Toast.LENGTH_LONG).show();
+
+    }
 
 
 }

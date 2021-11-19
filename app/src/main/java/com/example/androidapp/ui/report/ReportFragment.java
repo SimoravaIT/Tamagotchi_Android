@@ -40,8 +40,6 @@ public class ReportFragment extends Fragment {
         textView.setText("this is Report Fragment");
 
 
-
-
         return root;
     }
 

@@ -47,15 +47,16 @@ public class TasksFragment extends Fragment {
         //listView definition
         final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
 
-        myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
+        myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label, ObtainTasks()));
 
         //can be usefull for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
 
         //temp button for refresh
-        Button button = (Button) root.findViewById(R.id.button_populate);
+        //Button button = (Button) root.findViewById(R.id.button_populate);
 
+    /*
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -64,10 +65,11 @@ public class TasksFragment extends Fragment {
                 myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
             }
         });
-
+    */
 
     //add datas to the db by force it
-      /*  DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
+    /*
+        DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.KEY_NAME,"nomee");
@@ -76,7 +78,7 @@ public class TasksFragment extends Fragment {
         values.put(DatabaseHelper.KEY_STEPS, 300);
         values.put(DatabaseHelper.KEY_LOCATION, "afgan");
         database.insert(DatabaseHelper.TABLE_TASK_NAME, null, values);
-*/
+    */
         return root;
     }
 

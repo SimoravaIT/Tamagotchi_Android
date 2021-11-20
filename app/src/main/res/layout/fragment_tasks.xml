@@ -8,13 +8,21 @@
 
     <TextView
         android:id="@+id/textList"
-        android:layout_width="match_parent"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/HeaderList"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_marginBottom="12dp"
+        android:drawableLeft="@drawable/ic_coin_32dp"
+        android:drawablePadding="15dp"
+        android:text="@string/coin_state"
+        android:textAlignment="textStart"
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bungee"
+        app:layout_constraintBottom_toTopOf="@+id/ListView_tasks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
     <!-- app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,13 +31,14 @@
 
     <ListView
         android:id="@+id/ListView_tasks"
-        android:layout_width="300dp"
-        android:layout_height="450dp"
+        android:layout_width="330dp"
+        android:layout_height="365dp"
         android:layout_below="@+id/textList"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="65dp"
         android:choiceMode="singleChoice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,14 +47,14 @@
 
         />
 
-    <Button
-        android:id="@+id/button_populate"
-        android:layout_width="66dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="52dp"
-        app:icon="@android:drawable/ic_popup_sync"
-        app:layout_constraintBottom_toTopOf="@+id/ListView_tasks"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+<!--    <Button-->
+<!--        android:id="@+id/button_populate"-->
+<!--        android:layout_width="66dp"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:layout_marginEnd="52dp"-->
+<!--        app:icon="@android:drawable/ic_popup_sync"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/ListView_tasks"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

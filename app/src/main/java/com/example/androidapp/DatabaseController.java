@@ -43,7 +43,6 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static List<Task> loadTasks(Context context){
         // Returns all tasks
         List<Task> tasks = new LinkedList<Task>();
-        Task task = new Task();
 
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -53,6 +52,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
+            Task task = new Task();
             task.setKey(cursor.getString(0));
             task.setDescription(cursor.getString(1));
             task.setReward(cursor.getInt(2));
@@ -63,7 +63,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         }
         database.close();
         cursor.close();
-        Log.d("STORED TASKS: ", String.valueOf(tasks));
 
         return tasks;
     }
@@ -85,10 +84,9 @@ public class DatabaseController extends SQLiteOpenHelper {
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        String where = key + " = ?";
         String [] whereArgs = { String.valueOf(key) };
 
-        Cursor cursor = database.query("Task", null, where, whereArgs, null,
+        Cursor cursor = database.query("Task", null, "key=?", whereArgs, null,
                 null, null );
 
         cursor.moveToFirst();

@@ -35,13 +35,11 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     private Context context;
 
-    // TODO 2: Add the constructor
     public DatabaseController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
-    // Load all records in the database
     public static List<Task> loadTasks(Context context){
         // Returns all tasks
         List<Task> tasks = new LinkedList<Task>();
@@ -53,7 +51,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         Cursor cursor = database.query("Task", null, null, null, null,
                 null, null );
 
-        // iterate over returned elements
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
             task.setKey(cursor.getString(0));
@@ -105,7 +102,6 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return task;
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {

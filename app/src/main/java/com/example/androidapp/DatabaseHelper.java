@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "DB_tamagotchi";
 
     public static final String TABLE_STEPS_NAME = "num_steps";

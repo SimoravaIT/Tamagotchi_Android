@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import android.widget.ArrayAdapter;
@@ -26,7 +27,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.androidapp.DatabaseHelper;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentTasksBinding;
+import com.google.android.material.textview.MaterialTextView;
 
+import org.w3c.dom.Text;
 
 
 public class TasksFragment extends Fragment  implements AdapterView.OnItemClickListener{
@@ -41,9 +44,9 @@ public class TasksFragment extends Fragment  implements AdapterView.OnItemClickL
         View root = binding.getRoot();
 
 
-        final ListView tasks_listView = (ListView) root.findViewById(R.id.ListView_tasks);
-        tasks_listView.setOnItemClickListener(this);
-        tasks_listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label, DatabaseHelper.ObtainTasksNames(getActivity())));
+        final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
+        myListView.setOnItemClickListener(this);
+        myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label, DatabaseHelper.ObtainTasksNames(getActivity())));
 
 
         //can be usefull for View context
@@ -51,18 +54,19 @@ public class TasksFragment extends Fragment  implements AdapterView.OnItemClickL
                 container, false);
 
 
+
     //add datas to the db by force it
-    /*
+        /*
         DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.KEY_NAME,"nomee");
-        values.put(DatabaseHelper.KEY_DESCRIPTION, "descrizione");
-        values.put(DatabaseHelper.KEY_REWARD, 400);
-        values.put(DatabaseHelper.KEY_STEPS, 300);
-        values.put(DatabaseHelper.KEY_LOCATION, "afgan");
-        database.insert(DatabaseHelper.TABLE_TASK_NAME, null, values);
-    */
+        values.put(DatabaseHelper.KEY_TASKS_NAME,"NAME3");
+        values.put(DatabaseHelper.KEY_TASKS_DESCRIPTION, "descrizione3");
+        values.put(DatabaseHelper.KEY_TASKS_REWARD, 400);
+        values.put(DatabaseHelper.KEY_TASKS_STEPS, 300);
+        values.put(DatabaseHelper.KEY_TASKS_LOCATION, "afgan");
+        database.insert(DatabaseHelper.TABLE_TASKS_NAME, null, values);
+*/
         return root;
     }
 
@@ -70,13 +74,16 @@ public class TasksFragment extends Fragment  implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
         ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
-        TextView t = (TextView) myListView.getChildAt((int) id);
-        Log.i("HelloListView", "il nome è--->" + t.getText());
-        Log.i("HelloListView", "descrizione  è--->" + DatabaseHelper.
-                ObtainTaskDescription(getContext(), String.valueOf(t.getText())));
+        Log.i("HelloListView", "You are here: "+myListView.getChildCount());
+        LinearLayout ll = (LinearLayout) myListView.getChildAt(position);
+        MaterialTextView text = (MaterialTextView) ll.getChildAt(0);
+      Log.i("HelloListView", "my name is --->" + text.getText());
+      Log.i("HelloListView", "my description is--->" + DatabaseHelper.
+                ObtainTaskDescription(getContext(), String.valueOf(text.getText())));
         String descr=DatabaseHelper.
-                ObtainTaskDescription(getContext(), String.valueOf(t.getText()));
-        Toast.makeText(getContext(),"DESCRIPTION: " + descr,Toast.LENGTH_LONG).show();
+                ObtainTaskDescription(getContext(), String.valueOf(text.getText()));
+
+        Toast.makeText(getActivity(),"DESCRIPTION: " + descr,Toast.LENGTH_LONG).show();
     }
 
 }

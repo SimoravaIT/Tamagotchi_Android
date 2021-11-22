@@ -53,32 +53,7 @@ public class TasksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
 
-        //temp button for refresh
-        //Button button = (Button) root.findViewById(R.id.button_populate);
 
-    /*
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
-            }
-        });
-    */
-
-    //add datas to the db by force it
-    /*
-        DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.KEY_NAME,"nomee");
-        values.put(DatabaseHelper.KEY_DESCRIPTION, "descrizione");
-        values.put(DatabaseHelper.KEY_REWARD, 400);
-        values.put(DatabaseHelper.KEY_STEPS, 300);
-        values.put(DatabaseHelper.KEY_LOCATION, "afgan");
-        database.insert(DatabaseHelper.TABLE_TASK_NAME, null, values);
-    */
         return root;
     }
 

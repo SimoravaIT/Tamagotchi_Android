@@ -1,16 +1,16 @@
 package com.example.androidapp;
 
 public class Task {
+    private String key;
     private String description;
     private int reward;
     private int numSteps;
     private String location;
 
-    public Task(String description, int reward, int numSteps, String location){
-        this.description = description;
-        this.reward = reward;
-        this.numSteps = numSteps;
-        this.location = location;
+    public Task(){ }
+
+    public String getKey() {
+        return key;
     }
 
     public String getDescription() {
@@ -27,6 +27,10 @@ public class Task {
 
     public String getLocation() {
         return this.location;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public void setDescription(String description) {

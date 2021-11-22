@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static final String KEY_TIMESTAMP = "timestamp";
     public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
+    private static android.widget.Toast Toast;
 
     private Context context;
 
@@ -38,8 +42,11 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
     // Load all records in the database
-    public static List<String> loadTasks(Context context){
-        List<String> tasks = new LinkedList<String>();
+    public static List<Task> loadTasks(Context context){
+        // Returns all tasks
+        List<Task> tasks = new LinkedList<Task>();
+        Task task = new Task();
+
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
@@ -49,52 +56,55 @@ public class DatabaseController extends SQLiteOpenHelper {
         // iterate over returned elements
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
-            tasks.add(cursor.getString(1));
+            task.setKey(cursor.getString(0));
+            task.setDescription(cursor.getString(1));
+            task.setReward(cursor.getInt(2));
+            task.setNumSteps(cursor.getInt(3));
+            task.setLocation(cursor.getString(4));
+            tasks.add(task);
             cursor.moveToNext();
         }
         database.close();
+        cursor.close();
         Log.d("STORED TASKS: ", String.valueOf(tasks));
 
         return tasks;
     }
 
-    //TODO 5: Delete all records from the database
-    //public static void deleteRecords(Context context){
-    //    StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
-    //    SQLiteDatabase database = database = databaseHelper.getWritableDatabase();
-    //    int numberDeletedRecords = 0;
-//
-    //    numberDeletedRecords = database.delete(StepAppOpenHelper.TABLE_NAME, null, null);
-    //    database.close();
-//
-    //    Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " steps", Toast.LENGTH_LONG).show();
-    //}
-//
-    //// load records from a single day
-    //public static Integer loadSingleRecord(Context context, String date){
-    //    List<String> steps = new LinkedList<String>();
-    //    // Get the readable database
-    //    StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
-    //    SQLiteDatabase database = databaseHelper.getReadableDatabase();
-//
-    //    String where = StepAppOpenHelper.KEY_DAY + " = ?";
-    //    String [] whereArgs = { date };
-//
-    //    Cursor cursor = database.query(StepAppOpenHelper.TABLE_NAME, null, where, whereArgs, null,
-    //            null, null );
-//
-    //    // iterate over returned elements
-    //    cursor.moveToFirst();
-    //    for (int index=0; index < cursor.getCount(); index++){
-    //        steps.add(cursor.getString(0));
-    //        cursor.moveToNext();
-    //    }
-    //    database.close();
-//
-    //    Integer numSteps = steps.size();
-    //    Log.d("STORED STEPS TODAY: ", String.valueOf(numSteps));
-    //    return numSteps;
-    //}
+    public static void deleteAvailableTask(Context context){
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        int numberDeletedRecords = database.delete("AvailableTask", null, null);
+        database.close();
+
+        Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
+    }
+
+    public static Task loadSingleTask(Context context, int key){
+        // Returns a Task with given key
+        Task task = new Task();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        String where = key + " = ?";
+        String [] whereArgs = { String.valueOf(key) };
+
+        Cursor cursor = database.query("Task", null, where, whereArgs, null,
+                null, null );
+
+        cursor.moveToFirst();
+        task.setKey(cursor.getString(0));
+        task.setDescription(cursor.getString(1));
+        task.setReward(cursor.getInt(2));
+        task.setNumSteps(cursor.getInt(3));
+        task.setLocation(cursor.getString(4));
+        database.close();
+        cursor.close();
+
+        return task;
+    }
 
 
     @Override

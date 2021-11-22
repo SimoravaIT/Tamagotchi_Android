@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,9 @@ import com.example.androidapp.DatabaseHelper;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentTasksBinding;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment  implements AdapterView.OnItemClickListener{
 
 
     private FragmentTasksBinding binding;
@@ -41,31 +39,17 @@ public class TasksFragment extends Fragment {
 
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        DatabaseHelper databaseHelper = new DatabaseHelper(root.getContext());
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        //listView definition
-        final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
 
-        myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label, ObtainTasks()));
+        final ListView tasks_listView = (ListView) root.findViewById(R.id.ListView_tasks);
+        tasks_listView.setOnItemClickListener(this);
+        tasks_listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label, DatabaseHelper.ObtainTasksNames(getActivity())));
+
 
         //can be usefull for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
 
-        //temp button for refresh
-        //Button button = (Button) root.findViewById(R.id.button_populate);
-
-    /*
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                myListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,ObtainTasks()));
-            }
-        });
-    */
 
     //add datas to the db by force it
     /*
@@ -82,33 +66,17 @@ public class TasksFragment extends Fragment {
         return root;
     }
 
-    private List<String> ObtainTasks() {
-        List<String> temp = new LinkedList<String>();
-        String[] col={DatabaseHelper.KEY_NAME};
-        DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());//not sure getContext, check
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_TASK_NAME,
-                col, null, null, null,
-                null, null );
-        cursor.moveToFirst();
-        for (int index=0; index < cursor.getCount(); index++) {
-            temp.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-
-            //verification of numbers
-            Integer numTask = temp.size();
-            Toast.makeText(getActivity(),"added" + String.valueOf(temp) + " tasks to the list",Toast.LENGTH_LONG).show();
-
-
-            database.close();
-            return temp;
-
-    }
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
+        ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
+        TextView t = (TextView) myListView.getChildAt((int) id);
+        Log.i("HelloListView", "il nome è--->" + t.getText());
+        Log.i("HelloListView", "descrizione  è--->" + DatabaseHelper.
+                ObtainTaskDescription(getContext(), String.valueOf(t.getText())));
+        String descr=DatabaseHelper.
+                ObtainTaskDescription(getContext(), String.valueOf(t.getText()));
+        Toast.makeText(getContext(),"DESCRIPTION: " + descr,Toast.LENGTH_LONG).show();
     }
+
 }

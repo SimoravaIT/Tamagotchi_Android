@@ -52,8 +52,11 @@ public class TaskController {
         // Check if the user completed the task correctly and delete it from AvailableTask.
     }
 
-    public void collectReward(Task task) {
+    public void collectReward(Context context, Task task) {
         // Allocate money in the user's wallet according to the task.
+        User user = DatabaseController.loadUser(context);
+        user.setMoney(task.getReward());
+        DatabaseController.updateUser(context, user);
     }
 
     private static List<Task> generateRandomTasks(Context context) {

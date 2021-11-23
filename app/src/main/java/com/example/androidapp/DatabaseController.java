@@ -81,7 +81,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         Cursor cursor = database.query("Task", null, "key=?", whereArgs, null,
                 null, null );
 
-        if (cursor.getCount() > 0 && cursor != null) {
+        if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             task.setKey(cursor.getString(0));
             task.setDescription(cursor.getString(1));
@@ -128,6 +128,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
     public static void deleteAvailableTasks(Context context) {
+        // Dump the entire AvailableTask table.
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
@@ -135,6 +136,34 @@ public class DatabaseController extends SQLiteOpenHelper {
         database.close();
 
         Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
+    }
+
+    public static User loadUser(Context context) {
+        // Returns the user (or the first user, note that the constrain here is "there can only
+        // exists one user in the DB").
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        Cursor cursor = database.query("User", null, null, null, null,
+                null, null );
+
+        cursor.moveToFirst();
+        User user = new User();
+        user.setKey(cursor.getInt(0));
+        user.setMoney(cursor.getInt(1));
+
+        cursor.close();
+        database.close();
+
+        return user;
+    }
+
+    public static void updateUser(Context context, User user) {
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("money", user.getMoney());
+        database.update("User", cv,"key=?", new String[]{String.valueOf(user.getKey())});
     }
 
     @Override

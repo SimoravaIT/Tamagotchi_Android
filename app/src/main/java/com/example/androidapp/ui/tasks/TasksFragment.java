@@ -85,6 +85,6 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         if(selected_task.isCompleted()==false)
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getActivity(),"You earn " + selected_task.getReward(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"You earn " + selected_task.getReward() + "coins",Toast.LENGTH_SHORT).show();
     }
 }

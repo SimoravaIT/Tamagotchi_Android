@@ -1,20 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/coins"
+        android:layout_width="52dp"
+        android:layout_height="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="6dip"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_coin" />
+
+    <TextView
+        android:id="@+id/collect"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/coins"
+        android:ellipsize="marquee"
+        android:maxLines="1"
+        android:text="collect  coins"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/label"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
-        android:background="@drawable/task_background_curve"
-        android:fontFamily="@font/bungee"
-        android:paddingHorizontal="25dp"
-        android:paddingVertical="10dp"
+        android:layout_above="@id/label"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/coins"
+        android:gravity="center_vertical"
+        android:text="descriz"
+        android:textSize="16sp" />
 
-        android:text="@+id/label"
-        android:textColor="@color/white"
-        android:textSize="34px"></TextView>
-
-</LinearLayout>
+</RelativeLayout>

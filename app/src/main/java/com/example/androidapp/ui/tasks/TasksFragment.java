@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.R;
 import com.example.androidapp.Task;
+import com.example.androidapp.TaskController;
 import com.example.androidapp.databinding.FragmentTasksBinding;
 
 import java.util.LinkedList;
@@ -39,12 +40,16 @@ public class TasksFragment extends Fragment {
         //listView definition
         final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
 
-        Task tasks = databaseHelper.loadSingleTask(root.getContext(), 1);
+        TaskController tc = new TaskController(root.getContext());
 
-        //can be usefull for View context
+        List<Task> tasks = databaseHelper.loadAvailableTasks(root.getContext());
+
+        //can be useful for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
         return root;
+
+        //TODO: Implement the AVAILABLE (!!) tasks visualization.
     }
 
     @Override

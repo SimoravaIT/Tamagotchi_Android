@@ -1,10 +1,17 @@
 package com.example.androidapp;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,31 +19,28 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
-public class TaskController extends BroadcastReceiver {
-    private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
+public class TaskController {
 
     public TaskController(Context context){
-        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, TaskController.class);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-        // Set the alarm to start at 05:00 AM
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 5);
-        calendar.set(Calendar.MINUTE, 0);
-
-        // setRepeating() specifies a custom interval to repeat the alarm (1 day in this case)
-        alarmMgr.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
+        // At the moment new tasks are created every time the user access after 16:00, but it later
+        // we should change that behavior by setting a temporal window in which the user can access
+        // the app and get new tasks (reminding it by using a notification).
+        if (hour >= 16) {
+            generateTasks(context);
+        }
     }
 
     public static void generateTasks(Context context) {
         // Take randomly n tasks from the db and put them in the AvailableTask table every day.
+        DatabaseController.deleteAvailableTasks(context);
+
         List<Task> tasks = generateRandomTasks(context);
 
         for (int i=0; i < tasks.size(); i++) {
@@ -62,7 +66,7 @@ public class TaskController extends BroadcastReceiver {
         int upperbound = 3;
         int toBeGenerated = 2;
         int[] arr = new int[toBeGenerated];
-        for (int i=0; i<100; i++) {
+        for (int i=0; i<arr.length; i++) {
             int number = rand.nextInt(upperbound);
             while (unique.contains(number)) // 'number' is a duplicate
                 number = rand.nextInt(upperbound);
@@ -75,11 +79,5 @@ public class TaskController extends BroadcastReceiver {
         }
 
         return tasks;
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        DatabaseController.deleteAvailableTasks(context);
-        generateTasks(context);
     }
 }

@@ -81,12 +81,15 @@ public class DatabaseController extends SQLiteOpenHelper {
         Cursor cursor = database.query("Task", null, "key=?", whereArgs, null,
                 null, null );
 
-        cursor.moveToFirst();
-        task.setKey(cursor.getString(0));
-        task.setDescription(cursor.getString(1));
-        task.setReward(cursor.getInt(2));
-        task.setNumSteps(cursor.getInt(3));
-        task.setLocation(cursor.getString(4));
+        if (cursor.getCount() > 0 && cursor != null) {
+            cursor.moveToFirst();
+            task.setKey(cursor.getString(0));
+            task.setDescription(cursor.getString(1));
+            task.setReward(cursor.getInt(2));
+            task.setNumSteps(cursor.getInt(3));
+            task.setLocation(cursor.getString(4));
+        }
+
         database.close();
         cursor.close();
 
@@ -104,16 +107,11 @@ public class DatabaseController extends SQLiteOpenHelper {
                 null, null );
 
         cursor.moveToFirst();
-        for (int index=0; index < cursor.getCount(); index++){
-            Task task = new Task();
-            task.setKey(cursor.getString(0));
-            task.setDescription(cursor.getString(1));
-            task.setReward(cursor.getInt(2));
-            task.setNumSteps(cursor.getInt(3));
-            task.setLocation(cursor.getString(4));
-            tasks.add(task);
+        for(int i=0; i < cursor.getCount(); i++){
+            tasks.add(loadSingleTask(context, cursor.getInt(1)));
             cursor.moveToNext();
         }
+
         database.close();
         cursor.close();
 
@@ -148,15 +146,15 @@ public class DatabaseController extends SQLiteOpenHelper {
         String CREATE_TASK = "CREATE TABLE Task " +
                 "('key' INTEGER PRIMARY KEY, 'description' TEXT, 'reward' TEXT, 'numSteps' INTEGER, 'location' TEXT);";
         String CREATE_AVAILABLE_TASK = "CREATE TABLE AvailableTask " +
-                "('key' INTEGER PRIMARY KEY, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
+                "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
         String CREATE_FOOD = "CREATE TABLE Food " +
                 "('key' INTEGER PRIMARY KEY, 'happinessLevel' INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_FOOD = "CREATE TABLE AvailableFood " +
-                "('key' INTEGER PRIMARY KEY, FOREIGN KEY ('key') REFERENCES Food('food.key'));";
+                "('key' INTEGER PRIMARY KEY, 'food.key' INTEGER, FOREIGN KEY ('key') REFERENCES Food('food.key'));";
         String CREATE_MEDICINE = "CREATE TABLE Medicine " +
                 "('key' INTEGER PRIMARY KEY, sicknessLevel INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
-                "('key' INTEGER PRIMARY KEY, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
+                "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
         String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
 
         db.execSQL(CREATE_USER);
@@ -171,11 +169,11 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         // Insert data
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
-                "VALUES (1, 'Do 1000 steps', '25', 1000)");
+                "VALUES (0, 'Do 1000 steps', '25', 1000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
-                "VALUES (2, 'Do 2000 steps', '50', 2000)");
+                "VALUES (1, 'Do 2000 steps', '50', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward') " +
-                "VALUES (3, 'Expose under sun for 30 mins', '25')");
+                "VALUES (2, 'Expose under sun for 30 mins', '25')");
     }
 
     @Override

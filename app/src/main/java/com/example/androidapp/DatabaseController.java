@@ -202,8 +202,10 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "VALUES (0, 'Do 1000 steps', '25', 1000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (1, 'Do 2000 steps', '50', 2000)");
+        db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
+                "VALUES (2, 'Do 3000 steps', '60', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward') " +
-                "VALUES (2, 'Expose under sun for 30 mins', '25')");
+                "VALUES (3, 'Expose under sun for 30 mins', '25')");
     }
 
     @Override

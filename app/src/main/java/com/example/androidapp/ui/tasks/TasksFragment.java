@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.example.androidapp.R;
 import com.example.androidapp.Task;
 import com.example.androidapp.TaskController;
 import com.example.androidapp.databinding.FragmentTasksBinding;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,7 +33,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
 
     private FragmentTasksBinding binding;
-
+    List<Task> tasks;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +48,14 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
         TaskController tc = new TaskController(root.getContext());
 
-        List<Task> tasks = databaseHelper.loadAvailableTasks(root.getContext());
+         tasks = databaseHelper.loadAvailableTasks(root.getContext());
         ArrayList<String> list_tasks_avaiable=tasks_names(tasks);
-        myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label,list_tasks_avaiable));
+        myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label,tasks_names(tasks)));
         //can be useful for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
                 container, false);
         return root;
+
 
         //TODO: Implement the AVAILABLE (!!) tasks visualization.
     }
@@ -60,7 +63,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
     private ArrayList tasks_names(List<Task> list) {
         ArrayList<String> array_temp = new ArrayList<>();
         for(Task t:list){
-            array_temp.add(t.getKey());
+            array_temp.add(t.getDescription());
         }
         return array_temp;
     }
@@ -73,19 +76,16 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         binding = null;
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
-        //  ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
-        //Log.i("HelloListView", "You are here: "+myListView.getChildCount());
-        //LinearLayout ll = (LinearLayout) myListView.getChildAt(position);
-        //MaterialTextView text = (MaterialTextView) ll.getChildAt(0);
-        //Log.i("HelloListView", "my name is --->" + text.getText());
-        //Log.i("HelloListView", "my description is--->" + DatabaseHelper.
-        //      ObtainTaskDescription(getContext(), String.valueOf(text.getText())));
-        //String descr=DatabaseHelper.
-        //      ObtainTaskDescription(getContext(), String.valueOf(text.getText()));
+       // Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
 
-        //Toast.makeText(getActivity(),"DESCRIPTION: " + descr,Toast.LENGTH_LONG).show();
+          ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
+        LinearLayout ll = (LinearLayout) myListView.getChildAt(position);
+        MaterialTextView text = (MaterialTextView) ll.getChildAt(0);
+
+        Task selected_task=tasks.get(position);
+        Toast.makeText(getActivity(),"you clicked task--> " + selected_task.getDescription(),Toast.LENGTH_SHORT).show();
     }
 }

@@ -135,7 +135,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
 
-        Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
+       // Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
     }
 
     public static User loadUser(Context context) {
@@ -164,6 +164,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("money", user.getMoney());
         database.update("User", cv,"key=?", new String[]{String.valueOf(user.getKey())});
+
     }
 
     @Override

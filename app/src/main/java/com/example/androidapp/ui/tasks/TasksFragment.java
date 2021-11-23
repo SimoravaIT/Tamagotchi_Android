@@ -79,7 +79,6 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       // Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
 
           ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
         LinearLayout ll = (LinearLayout) myListView.getChildAt(position);
@@ -88,7 +87,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         Task selected_task=tasks.get(position);
 
         if(selected_task.isCompleted()==false)
-            Toast.makeText(getActivity(),"Task to be completed " ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"Task to be completed, it give you " + selected_task.getReward() + " coins ",Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(getActivity(),"You earn " + selected_task.getReward(),Toast.LENGTH_SHORT).show();
     }

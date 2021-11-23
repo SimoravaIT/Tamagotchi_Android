@@ -30,6 +30,7 @@ public class TasksFragment extends Fragment {
 
     private FragmentTasksBinding binding;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

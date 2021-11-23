@@ -48,8 +48,8 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
         TaskController tc = new TaskController(root.getContext());
 
-        tasks = databaseHelper.loadAvailableTasks(root.getContext());
-        ArrayList<String> list_tasks_avaiable=tasks_names(tasks);
+         tasks = databaseHelper.loadAvailableTasks(root.getContext());
+
         myListView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.task_layout, R.id.label,tasks_names(tasks)));
         //can be useful for View context
         View view = inflater.inflate(R.layout.fragment_tasks,
@@ -79,6 +79,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+       Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
 
           ListView myListView = (ListView) getView().findViewById(R.id.ListView_tasks);
         LinearLayout ll = (LinearLayout) myListView.getChildAt(position);

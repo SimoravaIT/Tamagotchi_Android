@@ -86,6 +86,10 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         MaterialTextView text = (MaterialTextView) ll.getChildAt(0);
 
         Task selected_task=tasks.get(position);
-        Toast.makeText(getActivity(),"you clicked task--> " + selected_task.getDescription(),Toast.LENGTH_SHORT).show();
+
+        if(selected_task.isCompleted()==false)
+            Toast.makeText(getActivity(),"Task to be completed " ,Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(),"You earn " + selected_task.getReward(),Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,7 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:background="#5EA1B1"
+    android:padding="6dip">
 
     <ImageView
         android:id="@+id/coins"
@@ -30,10 +33,10 @@
         android:id="@+id/label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/label"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_above="@id/label"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/coins"
         android:gravity="center_vertical"
         android:text="descriz"

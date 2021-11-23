@@ -8,9 +8,7 @@ public class Task {
     private String location;
     private boolean completed;
 
-    public Task(){
-        completed=false;
-    }
+    public Task(){ }
 
     public String getKey() {
         return key;

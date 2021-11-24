@@ -45,9 +45,9 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         TaskController tc = new TaskController(root.getContext());
 
         list_of_tasks = databaseHelper.loadAvailableTasks(root.getContext());
-        ArrayList<Task> array_lst_tasks=new ArrayList<>();
-        array_lst_tasks.addAll(list_of_tasks);
-        TasksAdapter adapter = new TasksAdapter(getActivity(),array_lst_tasks);
+        ArrayList<Task> array_list_tasks=new ArrayList<>();
+        array_list_tasks.addAll(list_of_tasks);
+        TasksAdapter adapter = new TasksAdapter(getActivity(),array_list_tasks);
         myListView.setAdapter(adapter);
 
         return root;

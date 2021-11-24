@@ -37,10 +37,10 @@ public class TasksAdapter extends ArrayAdapter<Task> {
 
         textView2.setText("coins: "+String.valueOf(values.get(position).getReward()));
 
-        //TODO modify the color when completed
-        if(values.get(position).isCompleted())
+        //TODO: modify the color when completed
+        if(values.get(position).getCompleted()) {
             relativeLayout.setBackgroundColor(Color.GREEN);
-
+        }
         return rowView;
     }
 }

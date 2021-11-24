@@ -30,7 +30,7 @@ public class Task {
         return this.location;
     }
 
-    public boolean isCompleted(){return this.completed; }
+    public boolean getCompleted(){return this.completed; }
 
     public void setKey(String key) {
         this.key = key;
@@ -52,7 +52,7 @@ public class Task {
         this.location = location;
     }
 
-    public void taskCompleted(){this.completed=true;}
+    public void setCompleted(boolean completed){this.completed=completed;}
 
 
 }

@@ -63,7 +63,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
        Log.i("TaskFragment", "You clicked Item: " + id + " at position:" + position);
        Task selected_task= list_of_tasks.get(position);
-        if(selected_task.isCompleted()==false)
+        if(selected_task.getCompleted()==false)
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(getActivity(),"You earn " + selected_task.getReward() + "coins",Toast.LENGTH_SHORT).show();

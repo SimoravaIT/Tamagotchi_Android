@@ -6,6 +6,7 @@ public class Task {
     private int reward;
     private int numSteps;
     private String location;
+    private boolean completed;
 
     public Task(){ }
 
@@ -29,6 +30,8 @@ public class Task {
         return this.location;
     }
 
+    public boolean getCompleted(){return this.completed; }
+
     public void setKey(String key) {
         this.key = key;
     }
@@ -48,4 +51,8 @@ public class Task {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public void setCompleted(boolean completed){this.completed=completed;}
+
+
 }

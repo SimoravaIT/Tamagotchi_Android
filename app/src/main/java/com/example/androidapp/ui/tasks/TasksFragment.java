@@ -1,13 +1,11 @@
 package com.example.androidapp.ui.tasks;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import android.widget.Toast;
@@ -20,42 +18,54 @@ import com.example.androidapp.R;
 import com.example.androidapp.Task;
 import com.example.androidapp.TaskController;
 import com.example.androidapp.databinding.FragmentTasksBinding;
+import com.example.androidapp.ui.TasksAdapter;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment implements AdapterView.OnItemClickListener{
 
 
     private FragmentTasksBinding binding;
-
+    List<Task> list_of_tasks;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_tasks, container, false);
         DatabaseController databaseHelper = new DatabaseController(root.getContext());
 
         //listView definition
         final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
+        myListView.setOnItemClickListener(this);
 
         TaskController tc = new TaskController(root.getContext());
 
-        List<Task> tasks = databaseHelper.loadAvailableTasks(root.getContext());
+        list_of_tasks = databaseHelper.loadAvailableTasks(root.getContext());
+        ArrayList<Task> array_list_tasks=new ArrayList<>();
+        array_list_tasks.addAll(list_of_tasks);
+        TasksAdapter adapter = new TasksAdapter(getActivity(),array_list_tasks);
+        myListView.setAdapter(adapter);
 
-        //can be useful for View context
-        View view = inflater.inflate(R.layout.fragment_tasks,
-                container, false);
         return root;
-
-        //TODO: Implement the AVAILABLE (!!) tasks visualization.
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+       Log.i("TaskFragment", "You clicked Item: " + id + " at position:" + position);
+       Task selected_task= list_of_tasks.get(position);
+        if(selected_task.isCompleted()==false)
+            Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(),"You earn " + selected_task.getReward() + "coins",Toast.LENGTH_SHORT).show();
     }
 }

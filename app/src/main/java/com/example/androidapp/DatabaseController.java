@@ -135,7 +135,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
 
-        Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
+       // Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
     }
 
     public static User loadUser(Context context) {
@@ -164,6 +164,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("money", user.getMoney());
         database.update("User", cv,"key=?", new String[]{String.valueOf(user.getKey())});
+
     }
 
     @Override
@@ -201,8 +202,10 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "VALUES (0, 'Do 1000 steps', '25', 1000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (1, 'Do 2000 steps', '50', 2000)");
+        db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
+                "VALUES (2, 'Do 3000 steps', '60', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward') " +
-                "VALUES (2, 'Expose under sun for 30 mins', '25')");
+                "VALUES (3, 'Expose under sun for 30 mins', '25')");
     }
 
     @Override

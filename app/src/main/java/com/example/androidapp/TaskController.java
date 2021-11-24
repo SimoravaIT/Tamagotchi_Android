@@ -67,7 +67,7 @@ public class TaskController {
         Random rand = new Random();
         Set<Integer> unique = new HashSet<Integer>();
         int upperbound = 3;
-        int toBeGenerated = 2;
+        int toBeGenerated = 3;
         int[] arr = new int[toBeGenerated];
         for (int i=0; i<arr.length; i++) {
             int number = rand.nextInt(upperbound);

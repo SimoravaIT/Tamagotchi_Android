@@ -28,15 +28,16 @@ public class TasksAdapter extends ArrayAdapter<Task> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.task_layout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         TextView textView2 = (TextView) rowView.findViewById(R.id.collect);
         textView.setText((CharSequence) values.get(position).getDescription());
         RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.relative_task);
-        // Change the icon for Windows and iPhone
+
         textView2.setText("coins: "+String.valueOf(values.get(position).getReward()));
+
+        //TODO modify the color when completed
         if(values.get(position).isCompleted())
             relativeLayout.setBackgroundColor(Color.GREEN);
 

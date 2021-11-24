@@ -2,11 +2,13 @@ package com.example.androidapp.ui;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.androidapp.R;
@@ -32,9 +34,11 @@ public class TasksAdapter extends ArrayAdapter<Task> {
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         TextView textView2 = (TextView) rowView.findViewById(R.id.collect);
         textView.setText((CharSequence) values.get(position).getDescription());
+        RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.relative_task);
         // Change the icon for Windows and iPhone
         textView2.setText("coins: "+String.valueOf(values.get(position).getReward()));
-
+        if(values.get(position).isCompleted())
+            relativeLayout.setBackgroundColor(Color.GREEN);
 
         return rowView;
     }

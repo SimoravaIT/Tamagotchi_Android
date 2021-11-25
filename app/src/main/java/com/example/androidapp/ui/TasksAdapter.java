@@ -41,7 +41,7 @@ public class TasksAdapter extends ArrayAdapter<Task> {
         textView2.setText(String.valueOf(values.get(position).getReward()));
 
         //TODO: modify the color when completed
-        if(values.get(position).getCompleted()) {
+        if(values.get(position).isCompleted()) {
             textView.setBackgroundResource(R.drawable.task_background_curve);
             textView.setTextColor(Color.parseColor("#ffffff"));
         }

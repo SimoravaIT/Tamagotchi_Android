@@ -13,9 +13,11 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/non_completed_task_curve"
         android:fontFamily="@font/bungee"
-        android:paddingHorizontal="25dp"
+
+        android:paddingLeft="25dp"
+        android:paddingRight="120dp"
         android:paddingVertical="10dp"
-        android:text="Bonus: 10000 steps"
+        android:text="Expose under the sun for 30 min and walk for 200km"
         android:textColor="#78909c"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

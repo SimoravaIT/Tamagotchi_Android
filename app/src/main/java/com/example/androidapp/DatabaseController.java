@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -34,6 +36,10 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
     private static android.widget.Toast Toast;
+
+
+
+
 
     private Context context;
 
@@ -167,6 +173,76 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     }
 
+
+    public static void loadSteps(Context context){
+        List<String> dates = new LinkedList<String>();
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor = database.query("Step", new String [] {"timestamp"}, null, null, "timestamp",
+                null, null );
+
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            dates.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        database.close();
+
+        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates));
+    }
+
+
+    public static Integer loadSingleStep(Context context, String date){
+        List<String> steps = new LinkedList<String>();
+        // Get the readable database
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor = database.query("Steps", null, "day = ?", new String [] {date}, null,
+                null, null );
+
+
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            steps.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        database.close();
+
+        Integer numSteps = steps.size();
+        Log.d("STORED STEPS TODAY: ", String.valueOf(numSteps));
+        return numSteps;
+    }
+    public static Map<String, Integer> loadStepsByDay(Context context){
+        // 1. Define a map to store the hour and number of steps as key-value pairs
+        Map<String, Integer>  map = new HashMap<>();
+
+        // 2. Get the readable database
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        // 3. Define the query to get the data
+        Cursor cursor=database.query("Step",new String [] {"day","COUNT(*)"},null, null,"day",null,"day");
+
+        // 4. Iterate over returned elements on the cursor
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            //2. Put the data from the database into the map
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+        // 5. Close the cursor and database
+        cursor.close();
+        database.close();
+
+        // 6. Return the map with hours and number of steps
+        return map;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create tables
@@ -186,6 +262,8 @@ public class DatabaseController extends SQLiteOpenHelper {
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
         String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
+
+
 
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_STEP);

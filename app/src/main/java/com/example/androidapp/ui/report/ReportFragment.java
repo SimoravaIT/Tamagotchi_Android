@@ -23,11 +23,6 @@ public class ReportFragment extends Fragment {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-        final TextView textView = binding.textDashboard;
-        textView.setText("this is Report Fragment");
-
-
         return root;
     }
 

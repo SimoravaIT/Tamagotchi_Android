@@ -34,7 +34,7 @@ public class ReportFragment extends Fragment {
         View root = binding.getRoot();
         TextView steps_taskView = (TextView) root.findViewById(R.id.numberTodayStep);
 
-        SensorController sensor_controller = new SensorController(root.getContext());
+        SensorController sensor_controller = new SensorController(root.getContext(),steps_taskView);
         steps_taskView.setText(sensor_controller.dailySteps());
         stepsCompleted=sensor_controller.dailySteps();
         return root;

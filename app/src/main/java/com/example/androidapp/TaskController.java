@@ -28,7 +28,6 @@ public class TaskController {
     public TaskController(Context context){
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-
         // At the moment new tasks are created every time the user access after 16:00, but it later
         // we should change that behavior by setting a temporal window in which the user can access
         // the app and get new tasks (reminding it by using a notification).

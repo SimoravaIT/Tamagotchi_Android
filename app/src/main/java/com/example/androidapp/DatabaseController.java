@@ -199,7 +199,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        Cursor cursor = database.query("Steps", null, "day = ?", new String [] {date}, null,
+        Cursor cursor = database.query("Step", null, "day = ?", new String [] {date}, null,
                 null, null );
 
 

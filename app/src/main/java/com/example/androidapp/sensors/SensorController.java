@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.ui.report.ReportFragment;
@@ -22,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class SensorController  implements SensorEventListener{
+public class SensorController {
 
     public TextView textNumberTodayStep;
 
@@ -39,20 +40,39 @@ public class SensorController  implements SensorEventListener{
     // Step Detector sensor
     private Sensor mSensorStepDetector;
 
-    // Completed steps
+    // Completed steps of the date
     static int stepsCompleted = 0;
 
     public SensorController(Context context,TextView textView) {
-        this.cxt=context;
+        this.cxt = context;
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        Log.d("TRYEXEC: ", "vero viene costruito sensorController");
-        DatabaseController databaseOpenHelper =   new DatabaseController(context);
-        database = databaseOpenHelper.getWritableDatabase();
-        listener = new StepCounterListener(database,textView);
-    }
 
+        Log.d("TRYEXEC: ", "vero viene costruito sensorController");
+        DatabaseController databaseOpenHelper = new DatabaseController(context);
+        database = databaseOpenHelper.getWritableDatabase();
+        listener = new StepCounterListener(database, textView);
+
+        Log.d("TRYEXEC: ", "start the listener");
+            // Check if the Accelerometer sensor exists
+            if (mSensorACC != null) {
+                Log.d("TRYEXEC: ", "mSensorACC not null");
+                // Register the ACC listener
+                mSensorManager.registerListener(listener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                Toast.makeText(context, "Accelerator not available", Toast.LENGTH_SHORT).show();
+            }
+            // Check if the Step detector sensor exists
+            if (mSensorStepDetector != null) {
+                Log.d("TRYEXEC: ", "mSensorStepDetector not null");
+                // Register the ACC listener
+                mSensorManager.registerListener(listener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                Log.d("TRYEXEC: ", "mSensorStepDetector = null");
+                Toast.makeText(context, "Step sens not available", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     public void SensorController(Activity activity){
         mSensorManager=(SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
@@ -60,23 +80,15 @@ public class SensorController  implements SensorEventListener{
 
     public int dailySteps(){
         fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        return DatabaseController.loadSingleStep(this.cxt,fDate);
+        stepsCompleted=DatabaseController.loadSingleStep(this.cxt,fDate);
+        return stepsCompleted;
     }
+
+    //TODO: method that returns all the steps
     public int totalSteps(){
         int total_steps=0;
         return total_steps;
     }
-
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
-    //TODO: remaining methods for TimeOutside()
 
 
     class StepCounterListener<stepsCompleted> implements SensorEventListener {

@@ -4,6 +4,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +23,19 @@ import java.util.Date;
 
 
 public class ReportFragment extends Fragment {
-
     static int stepsCompleted = 0;
     private FragmentReportBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         TextView steps_taskView = (TextView) root.findViewById(R.id.numberTodayStep);
 
         SensorController sensor_controller = new SensorController(root.getContext(),steps_taskView);
-        steps_taskView.setText(sensor_controller.dailySteps());
-        stepsCompleted=sensor_controller.dailySteps();
+        steps_taskView.setText(String.valueOf(sensor_controller.dailySteps()));
+
         return root;
     }
 

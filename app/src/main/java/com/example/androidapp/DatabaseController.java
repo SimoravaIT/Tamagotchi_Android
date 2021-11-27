@@ -195,13 +195,11 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     public static Integer loadSingleStep(Context context, String date){
         List<String> steps = new LinkedList<String>();
-        // Get the readable database
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
         Cursor cursor = database.query("Step", null, "day = ?", new String [] {date}, null,
                 null, null );
-
 
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
@@ -215,31 +213,25 @@ public class DatabaseController extends SQLiteOpenHelper {
         return numSteps;
     }
     public static Map<String, Integer> loadStepsByDay(Context context){
-        // 1. Define a map to store the hour and number of steps as key-value pairs
+
         Map<String, Integer>  map = new HashMap<>();
 
-        // 2. Get the readable database
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        // 3. Define the query to get the data
         Cursor cursor=database.query("Step",new String [] {"day","COUNT(*)"},null, null,"day",null,"day");
 
-        // 4. Iterate over returned elements on the cursor
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
             String tmpKey = cursor.getString(0);
             Integer tmpValue = Integer.parseInt(cursor.getString(1));
 
-            //2. Put the data from the database into the map
             map.put(tmpKey, tmpValue);
             cursor.moveToNext();
         }
-        // 5. Close the cursor and database
         cursor.close();
         database.close();
 
-        // 6. Return the map with hours and number of steps
         return map;
     }
 

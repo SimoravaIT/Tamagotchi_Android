@@ -174,6 +174,16 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
 
+    public static void isertStep(String s, String day, String hour,Context context) {
+        ContentValues values = new ContentValues();
+        values.put("timestamp", s);
+        values.put("day", day);
+        values.put("hour", hour);
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        database.insert("Step",null,values);
+    }
+
     public static void loadSteps(Context context){
         List<String> dates = new LinkedList<String>();
         DatabaseController databaseHelper = new DatabaseController(context);

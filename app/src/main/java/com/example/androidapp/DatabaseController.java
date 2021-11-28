@@ -173,7 +173,14 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     }
 
-
+    /**
+     * Function that insert in the DB the step.
+     *
+     * @param context: application context
+     * @param s: timestamp of that step detection
+     * @param day: day of the step detection
+     * @param hour: hour of the step detection
+     */
     public static void insertStep(String s, String day, String hour, Context context) {
         ContentValues values = new ContentValues();
         values.put("timestamp", s);
@@ -184,25 +191,15 @@ public class DatabaseController extends SQLiteOpenHelper {
         database.insert("Step",null,values);
     }
 
-    public static void loadSteps(Context context){
-        List<String> dates = new LinkedList<String>();
-        DatabaseController databaseHelper = new DatabaseController(context);
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        Cursor cursor = database.query("Step", new String [] {"timestamp"}, null, null, "timestamp",
-                null, null );
-
-        cursor.moveToFirst();
-        for (int index=0; index < cursor.getCount(); index++){
-            dates.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-        database.close();
-
-    }
-
-
-    public static Integer loadSingleStep(Context context, String date){
+    /**
+     * Utility function that return the number of steps done during a specific day passed as input.
+     *
+     * @param context: application context
+     * @param date: the date on which the steps were done
+     * @return numstep: the steps done in the day 'date'
+     */
+    public static Integer loadStepsForTheDay(Context context, String date){
         List<String> steps = new LinkedList<String>();
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -219,6 +216,14 @@ public class DatabaseController extends SQLiteOpenHelper {
         Integer numSteps = steps.size();
         return numSteps;
     }
+
+    /**
+     * Utility function to obtain a Map<string,Integer>  where the string represent the different
+     * days and the integer are the steps done on those day.
+     *
+     * @param context: application context
+     * @retutrn map: the Map with the days and the steps done in those days
+     */
     public static Map<String, Integer> loadStepsByDay(Context context){
 
         Map<String, Integer>  map = new HashMap<>();
@@ -261,7 +266,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
         String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
-
 
 
         db.execSQL(CREATE_USER);

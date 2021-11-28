@@ -58,7 +58,7 @@ public class SensorController {
         String fDate = formatter.format(calendar.getTime());
        // String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
-        stepsCompleted=DatabaseController.loadSingleStep(context, fDate);
+        stepsCompleted=DatabaseController.loadStepsForTheDay(context, fDate);
         return stepsCompleted;
     }
 

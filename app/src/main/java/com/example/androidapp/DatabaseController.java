@@ -174,7 +174,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
 
-    public static void isertStep(String s, String day, String hour,Context context) {
+    public static void insertStep(String s, String day, String hour, Context context) {
         ContentValues values = new ContentValues();
         values.put("timestamp", s);
         values.put("day", day);
@@ -199,7 +199,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         }
         database.close();
 
-        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates));
     }
 
 
@@ -217,9 +216,7 @@ public class DatabaseController extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         database.close();
-
         Integer numSteps = steps.size();
-        Log.d("STORED STEPS TODAY: ", String.valueOf(numSteps));
         return numSteps;
     }
     public static Map<String, Integer> loadStepsByDay(Context context){

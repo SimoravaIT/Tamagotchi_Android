@@ -1,26 +1,25 @@
 package com.example.androidapp.sensors;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentValues;
+
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.ui.report.ReportFragment;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -34,7 +33,6 @@ public class SensorController {
         Log.d("STEPSENSOR: ", "sensor controller created");
         SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         Sensor mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        // Step Detector sensor
         Sensor mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         SensorEventListener listener = new StepCounterListener(context);
@@ -49,12 +47,17 @@ public class SensorController {
                 mSensorManager.registerListener(listener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
             } else {
                 Log.d("STEPSENSOR: ", "mSensorStepDetector not found");
-
             }
         }
 
     public int dailySteps(Context context){
-        String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+
+        Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        String fDate = formatter.format(calendar.getTime());
+       // String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+
         stepsCompleted=DatabaseController.loadSingleStep(context, fDate);
         return stepsCompleted;
     }
@@ -145,7 +148,7 @@ public class SensorController {
                     if (forwardSlope < 0 && downwardSlope > 0 && dataPointList.get(i) > stepThreshold) {
                         mACCStepCounter += 1;
                         ReportFragment.showDailySteps(mACCStepCounter);
-                        DatabaseController.isertStep( timePointList.get(i),day,hour,cxt);
+                        DatabaseController.insertStep( timePointList.get(i),day,hour,cxt);
                     }
                 }
             }

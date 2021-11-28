@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.androidapp.DatabaseController;
+import com.example.androidapp.MainActivity;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentReportBinding;
 import com.example.androidapp.sensors.SensorController;
@@ -24,18 +25,18 @@ import java.util.Date;
 
 public class ReportFragment extends Fragment {
     private FragmentReportBinding binding;
-    public static TextView steps_taskView;
-
+    private static TextView  steps_taskView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        SensorController sensor_controller=new SensorController(root.getContext());
-
+        if(MainActivity.step_sensor==null){
+            MainActivity.step_sensor=new SensorController(getContext());
+        }
         steps_taskView = (TextView) root.findViewById(R.id.numberTodayStep);
-        steps_taskView.setText(String.valueOf(sensor_controller.dailySteps(getContext())));
+        steps_taskView.setText(String.valueOf(MainActivity.step_sensor.dailySteps(getContext())));
 
         return root;
     }

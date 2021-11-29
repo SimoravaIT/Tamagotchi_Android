@@ -25,24 +25,21 @@ import java.util.Date;
 
 public class ReportFragment extends Fragment {
     private FragmentReportBinding binding;
-    private static TextView  steps_taskView;
+    private static TextView  stepsTaskView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        if(MainActivity.step_sensor==null){
-            MainActivity.step_sensor=new SensorController(getContext());
-        }
-        steps_taskView = (TextView) root.findViewById(R.id.numberTodayStep);
-        steps_taskView.setText(String.valueOf(MainActivity.step_sensor.dailySteps(getContext())));
+        stepsTaskView = (TextView) root.findViewById(R.id.numberTodayStep);
+        stepsTaskView.setText(String.valueOf(SensorController.getDailySteps(getContext())));
 
         return root;
     }
 
     public static void showDailySteps(int value) {
-        steps_taskView.setText(String.valueOf(value));
+        stepsTaskView.setText(String.valueOf(value));
     }
 
     @Override

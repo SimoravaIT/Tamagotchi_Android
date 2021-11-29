@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -34,7 +36,6 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
     private static android.widget.Toast Toast;
-
     private Context context;
 
     public DatabaseController(Context context) {
@@ -134,8 +135,6 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
-
-       // Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
     }
 
     public static User loadUser(Context context) {
@@ -167,6 +166,81 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     }
 
+    public static void insertStep(String s, String day, String hour, Context context) {
+        /**
+         * Function that insert in the DB the step.
+         *
+         * @param context: application context
+         * @param s: timestamp of that step detection
+         * @param day: day of the step detection
+         * @param hour: hour of the step detection
+         */
+
+        ContentValues values = new ContentValues();
+        values.put("timestamp", s);
+        values.put("day", day);
+        values.put("hour", hour);
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        database.insert("Step",null,values);
+    }
+
+    public static Integer loadStepsForTheDay(Context context, String date){
+        /**
+         * Utility function that return the number of steps done during a specific day passed as input.
+         *
+         * @param context: application context
+         * @param date: the date on which the steps were done
+         * @return numstep: the steps done in the day 'date'
+         */
+
+        List<String> steps = new LinkedList<String>();
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor = database.query("Step", null, "day = ?", new String [] {date}, null,
+                null, null );
+
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            steps.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        database.close();
+        Integer numSteps = steps.size();
+        return numSteps;
+    }
+
+    public static Map<String, Integer> loadStepsByDay(Context context){
+        /**
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * days and the integer are the steps done on those day.
+         *
+         * @param context: application context
+         * @retutrn map: the Map with the days and the steps done in those days
+         */
+
+        Map<String, Integer>  map = new HashMap<>();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor=database.query("Step",new String [] {"day","COUNT(*)"},null, null,"day",null,"day");
+
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+
+        return map;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create tables
@@ -186,6 +260,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
         String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
+
 
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_STEP);

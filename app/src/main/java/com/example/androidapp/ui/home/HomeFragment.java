@@ -14,19 +14,21 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentHomeBinding;
+import com.example.androidapp.sensors.SensorController;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private SensorController sensorController;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         final TextView textView = binding.textHome;
         textView.setText("this is Home fragment");
+
+        this.sensorController = new SensorController(getContext());
 
         return root;
     }

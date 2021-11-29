@@ -31,7 +31,7 @@ public class TaskController {
         // At the moment new tasks are created every time the user access after 16:00, but it later
         // we should change that behavior by setting a temporal window in which the user can access
         // the app and get new tasks (reminding it by using a notification).
-        if (hour <= 16) {
+        if (hour >= 16) {
             generateTasks(context);
         }
     }

@@ -5,22 +5,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.androidapp.DatabaseController;
-import com.example.androidapp.ui.report.ReportFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.TimeZone;
 
 public class SensorController {
@@ -59,5 +53,18 @@ public class SensorController {
         stepsCompleted=DatabaseController.loadStepsForTheDay(context, fDate);
 
         return stepsCompleted;
+    }
+    public static int getMonthlySteps(Context context){
+        long timeInMillis1 = System.currentTimeMillis();
+        long timeInMillis2 = System.currentTimeMillis()-(long)30*1000*60*60*24;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
+        String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
+        Log.d("DATES","range searched->  "+dateStart+"  to  "+dateEnd);
+        return DatabaseController.loadStepsBetweenDates(context,dateStart,dateEnd);
+    }
+    public static int getTotalSteps(Context context){
+        return DatabaseController.loadCountTotalSteps(context);
     }
 }

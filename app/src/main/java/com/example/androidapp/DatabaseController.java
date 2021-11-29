@@ -36,11 +36,6 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
     private static android.widget.Toast Toast;
-
-
-
-
-
     private Context context;
 
     public DatabaseController(Context context) {
@@ -140,8 +135,6 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
-
-       // Toast.makeText(context, "Deleted: " + String.valueOf(numberDeletedRecords) + " tasks", Toast.LENGTH_LONG).show();
     }
 
     public static User loadUser(Context context) {
@@ -173,15 +166,16 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * Function that insert in the DB the step.
-     *
-     * @param context: application context
-     * @param s: timestamp of that step detection
-     * @param day: day of the step detection
-     * @param hour: hour of the step detection
-     */
     public static void insertStep(String s, String day, String hour, Context context) {
+        /**
+         * Function that insert in the DB the step.
+         *
+         * @param context: application context
+         * @param s: timestamp of that step detection
+         * @param day: day of the step detection
+         * @param hour: hour of the step detection
+         */
+
         ContentValues values = new ContentValues();
         values.put("timestamp", s);
         values.put("day", day);
@@ -191,15 +185,15 @@ public class DatabaseController extends SQLiteOpenHelper {
         database.insert("Step",null,values);
     }
 
-
-    /**
-     * Utility function that return the number of steps done during a specific day passed as input.
-     *
-     * @param context: application context
-     * @param date: the date on which the steps were done
-     * @return numstep: the steps done in the day 'date'
-     */
     public static Integer loadStepsForTheDay(Context context, String date){
+        /**
+         * Utility function that return the number of steps done during a specific day passed as input.
+         *
+         * @param context: application context
+         * @param date: the date on which the steps were done
+         * @return numstep: the steps done in the day 'date'
+         */
+
         List<String> steps = new LinkedList<String>();
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -217,14 +211,14 @@ public class DatabaseController extends SQLiteOpenHelper {
         return numSteps;
     }
 
-    /**
-     * Utility function to obtain a Map<string,Integer>  where the string represent the different
-     * days and the integer are the steps done on those day.
-     *
-     * @param context: application context
-     * @retutrn map: the Map with the days and the steps done in those days
-     */
     public static Map<String, Integer> loadStepsByDay(Context context){
+        /**
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * days and the integer are the steps done on those day.
+         *
+         * @param context: application context
+         * @retutrn map: the Map with the days and the steps done in those days
+         */
 
         Map<String, Integer>  map = new HashMap<>();
 

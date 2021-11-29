@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean runningQOrLater =
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
 
-    public static SensorController stepSensor;
+    public static SensorController sensorController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -48,7 +48,6 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
                 jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
                 String date = jdf.format(timeInMillis);
-                Log.d("ACC STEPS: ", "prova");
                 timestamp = date;
                 day = date.substring(0, 10);
                 hour = date.substring(11, 13);

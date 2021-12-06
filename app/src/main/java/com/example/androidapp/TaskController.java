@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -29,16 +30,18 @@ public class TaskController {
     public TaskController(Context context){
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        // At the moment new tasks are created every time the user access after 16:00, but it later
-        // we should change that behavior by setting a temporal window in which the user can access
-        // the app and get new tasks (reminding it by using a notification).
-        if (hour >= 16) {
+
+        // New available tasks are generated as soon as one is completed
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        List<Task> availableTasks = DatabaseController.loadAvailableTasks(context);
+        if (availableTasks.size() < 3) {
             generateTasks(context);
         }
     }
 
     public static void generateTasks(Context context) {
-        // Take randomly n tasks from the db and put them in the AvailableTask table every day.
+        // Take randomly n tasks from the db and put them in the AvailableTask table.
         DatabaseController.deleteAvailableTasks(context);
 
         List<Task> tasks = generateRandomTasks(context);
@@ -59,9 +62,8 @@ public class TaskController {
         boolean completed = false;
 
         for (int i = 0; i < atasks.size(); i++) {
-            Log.d("TASKS", String.valueOf(atasks.get(i).getNumSteps()));
             if (atasks.get(i).getNumSteps() > 0) {
-                // Task is about completing steps
+                // Task is about completing number of steps
                 if (taskIsCompleted(atasks.get(i).getNumSteps(), todaySteps)) {
                     collectReward(context, atasks.get(i));
                     DatabaseController.completeAvailableTask(context, atasks.get(i).getKey());
@@ -87,7 +89,8 @@ public class TaskController {
     private void collectReward(Context context, Task task) {
         // Allocate money in the user's wallet according to the task.
         User user = DatabaseController.loadUser(context);
-        user.setMoney(task.getReward());
+        int oldMoney = user.getMoney();
+        user.setMoney(task.getReward() + oldMoney);
         DatabaseController.updateUser(context, user);
     }
 
@@ -99,7 +102,7 @@ public class TaskController {
         Random rand = new Random();
         Set<Integer> unique = new HashSet<Integer>();
         int upperbound = 3;
-        int toBeGenerated = 2;
+        int toBeGenerated = 3;
         int[] arr = new int[toBeGenerated];
         for (int i=0; i<arr.length; i++) {
             int number = rand.nextInt(upperbound);

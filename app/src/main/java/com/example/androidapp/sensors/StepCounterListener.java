@@ -98,6 +98,8 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
                 if (forwardSlope < 0 && downwardSlope > 0 && dataPointList.get(i) > stepThreshold) {
                     mACCStepCounter += 1;
                     ReportFragment.showDailySteps(mACCStepCounter);
+                    ReportFragment.showMonthlySteps(SensorController.getMonthlySteps(context));
+                    ReportFragment.showTotalSteps(SensorController.getTotalSteps(context));
                     DatabaseController.insertStep(timePointList.get(i), day, hour, this.context);
                 }
             }

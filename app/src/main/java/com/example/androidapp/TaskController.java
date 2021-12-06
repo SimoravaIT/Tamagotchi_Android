@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -22,22 +23,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.text.SimpleDateFormat;
 
 public class TaskController {
 
     public TaskController(Context context){
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        // At the moment new tasks are created every time the user access after 16:00, but it later
-        // we should change that behavior by setting a temporal window in which the user can access
-        // the app and get new tasks (reminding it by using a notification).
-        if (hour >= 16) {
+
+        // New available tasks are generated as soon as one is completed
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        List<Task> availableTasks = DatabaseController.loadAvailableTasks(context);
+        if (availableTasks.size() < 3) {
             generateTasks(context);
         }
     }
 
     public static void generateTasks(Context context) {
-        // Take randomly n tasks from the db and put them in the AvailableTask table every day.
+        // Take randomly n tasks from the db and put them in the AvailableTask table.
         DatabaseController.deleteAvailableTasks(context);
 
         List<Task> tasks = generateRandomTasks(context);
@@ -47,14 +51,46 @@ public class TaskController {
         }
     }
 
-    public void completeTask(Context context) {
-        // Check if the user completed the task correctly and delete it from AvailableTask.
+    public boolean completeTasks(Context context) {
+        // Check if the user completed any task correctly and delete it from AvailableTask.
+        List<Task> atasks = DatabaseController.loadAvailableTasks(context);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String today = df.format(c);
+        int todaySteps = DatabaseController.loadStepsForTheDay(context, today);
+        boolean completed = false;
+
+        for (int i = 0; i < atasks.size(); i++) {
+            if (atasks.get(i).getNumSteps() > 0) {
+                // Task is about completing number of steps
+                if (taskIsCompleted(atasks.get(i).getNumSteps(), todaySteps)) {
+                    collectReward(context, atasks.get(i));
+                    DatabaseController.completeAvailableTask(context, atasks.get(i).getKey());
+                    completed = true;
+                }
+            } else {
+                // Task is about something else
+            }
+        }
+        return completed;
     }
 
-    public void collectReward(Context context, Task task) {
+    private boolean taskIsCompleted(int req, int state) {
+        // Input: 'req' is the number of steps/time outside required by the task
+        //        'state' is the actual state of steps/time outside performed by the user
+        if (state >= req) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void collectReward(Context context, Task task) {
         // Allocate money in the user's wallet according to the task.
         User user = DatabaseController.loadUser(context);
-        user.setMoney(task.getReward());
+        int oldMoney = user.getMoney();
+        user.setMoney(task.getReward() + oldMoney);
         DatabaseController.updateUser(context, user);
     }
 

@@ -98,13 +98,13 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
     public static List<Task> loadAvailableTasks(Context context) {
-        // Returns all the available tasks of the day
+        // Returns all the available tasks (the not completed ones)
         List<Task> tasks = new LinkedList<Task>();
 
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        Cursor cursor = database.query("AvailableTask", null, null, null, null,
+        Cursor cursor = database.query("AvailableTask", null, "completed=?", new String[]{"0"}, null,
                 null, null );
 
         cursor.moveToFirst();
@@ -124,8 +124,19 @@ public class DatabaseController extends SQLiteOpenHelper {
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        database.execSQL("INSERT INTO AvailableTask ('key', 'task.key') " +
-                "VALUES ("+task.getKey()+", (SELECT key FROM Task WHERE key="+task.getKey()+"))");
+        database.execSQL("INSERT INTO AvailableTask ('key', 'completed', 'task.key') " +
+                "VALUES ("+task.getKey()+", 0, (SELECT key FROM Task WHERE key="+task.getKey()+"))");
+    }
+
+    public static void completeAvailableTask(Context context, String id) {
+        // Set the state of an available task to completed.
+        // NOTE: this method doesn't check if the user's state comply with the requirements of the task
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("completed", 1);
+        database.update("AvailableTask", cv,"key=?", new String[]{id});
     }
 
     public static void deleteAvailableTasks(Context context) {
@@ -163,7 +174,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("money", user.getMoney());
         database.update("User", cv,"key=?", new String[]{String.valueOf(user.getKey())});
-
     }
 
     public static void insertStep(String s, String day, String hour, Context context) {
@@ -190,7 +200,7 @@ public class DatabaseController extends SQLiteOpenHelper {
          * Utility function that return the number of steps done during a specific day passed as input.
          *
          * @param context: application context
-         * @param date: the date on which the steps were done
+         * @param date: the date (YYYY-MM-DD) on which the steps were done
          * @return numstep: the steps done in the day 'date'
          */
 
@@ -300,8 +310,11 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "('key' INTEGER PRIMARY KEY, 'timestamp' TEXT, 'day' TEXT, 'hour' TEXT);";
         String CREATE_TASK = "CREATE TABLE Task " +
                 "('key' INTEGER PRIMARY KEY, 'description' TEXT, 'reward' TEXT, 'numSteps' INTEGER, 'location' TEXT);";
+
+        // "completed" here must be of type TEXT because then it cannot be parametrized in the queries
+        // https://stackoverflow.com/questions/18746149/android-sqlite-selection-args-with-int-values
         String CREATE_AVAILABLE_TASK = "CREATE TABLE AvailableTask " +
-                "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
+                "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, 'completed' TEXT, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
         String CREATE_FOOD = "CREATE TABLE Food " +
                 "('key' INTEGER PRIMARY KEY, 'happinessLevel' INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_FOOD = "CREATE TABLE AvailableFood " +
@@ -324,14 +337,19 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL(CREATE_PET);
 
         // Insert data
+        db.execSQL("INSERT INTO User ('key', 'money') " +
+                "VALUES (0, 10)");
+
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
-                "VALUES (0, 'Do 1000 steps', '25', 1000)");
+                "VALUES (0, 'Do 1 step', '1', 1)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (1, 'Do 2000 steps', '50', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (2, 'Do 3000 steps', '60', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward') " +
                 "VALUES (3, 'Expose under sun for 30 mins', '25')");
+        db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
+                "VALUES (4, 'Do 100 steps', '10', 100)");
     }
 
     @Override

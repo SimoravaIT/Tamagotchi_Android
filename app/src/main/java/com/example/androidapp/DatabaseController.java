@@ -337,14 +337,19 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL(CREATE_PET);
 
         // Insert data
+        db.execSQL("INSERT INTO User ('key', 'money') " +
+                "VALUES (0, 10)");
+
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
-                "VALUES (0, 'Do 1000 steps', '25', 1000)");
+                "VALUES (0, 'Do 1 step', '1', 1)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (1, 'Do 2000 steps', '50', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (2, 'Do 3000 steps', '60', 2000)");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward') " +
                 "VALUES (3, 'Expose under sun for 30 mins', '25')");
+        db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
+                "VALUES (1, 'Do 100 steps', '10', 100)");
     }
 
     @Override

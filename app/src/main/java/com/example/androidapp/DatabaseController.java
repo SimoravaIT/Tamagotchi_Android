@@ -239,6 +239,36 @@ public class DatabaseController extends SQLiteOpenHelper {
         Log.d("STORED TIMESTAMPS: ", String.valueOf(dates.size()));
         return dates.size();
     }
+    public static Map<String, Integer> loadStepsBy30Day(Context context,String date1, String date2){
+        /**
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * days and the integer are the steps done on those day from the 2 date in input.
+         * @param date1: start date
+         * @param date2: finish date
+         * @param context: application context
+         * @retutrn map: the Map with the days and the steps done in those days
+         */
+
+        Map<String, Integer>  map = new HashMap<>();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        String[] args= new String[]{date1,date2};
+        Cursor cursor=database.query("Step",new String [] {"day","COUNT(*)"},"day BETWEEN ? AND ?", args,"day",null,"day");
+
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+
+        return map;
+    }
     public static Map<String, Integer> loadStepsByDay(Context context){
         /**
          * Utility function to obtain a Map<string,Integer>  where the string represent the different

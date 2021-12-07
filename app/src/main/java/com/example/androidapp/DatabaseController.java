@@ -377,11 +377,11 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
                 "VALUES (0, 'Banana', '15', '15')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (0, 'Steak', '50', '50')");
+                "VALUES (1, 'Steak', '50', '50')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (0, 'Milk', '10', '10')");
+                "VALUES (2, 'Milk', '10', '10')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (0, 'Salad', '5', '5')");
+                "VALUES (3, 'Salad', '5', '5')");
     }
 
     @Override

@@ -283,7 +283,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
         Cursor cursor=database.query("Step",new String [] {"hour","COUNT(*)"}, "day = ?", new String[]{date},"hour",null,"hour");
-        Log.d("ciao","ciao2");
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
             Integer tmpKey = Integer.parseInt(cursor.getString(0));
@@ -311,7 +310,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         Cursor cursor = database.query("Step",  new String[]{"day"},
                 null, null, null,
                 null, null );
-
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
             dates.add(cursor.getString(0));

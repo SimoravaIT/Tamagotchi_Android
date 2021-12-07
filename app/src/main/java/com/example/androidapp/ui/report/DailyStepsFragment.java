@@ -7,12 +7,7 @@ import com.anychart.AnyChartView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,17 +23,13 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.example.androidapp.DatabaseController;
-import com.example.androidapp.MainActivity;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentDailyStepsBinding;
-import com.example.androidapp.databinding.FragmentReportBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +39,8 @@ import java.util.TreeMap;
 public class DailyStepsFragment extends Fragment {
 
     public Map<Integer, Integer> stepsByHour = null;
-    TextView numStepsTextView;
-    AnyChartView anyChartView;
+    public TextView numStepsTextView;
+    public AnyChartView anyChartView;
     private FragmentDailyStepsBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +60,13 @@ public class DailyStepsFragment extends Fragment {
         String fDate = formatter.format(calendar.getTime());
 
         numStepsTextView = root.findViewById(R.id.today_steps_stat);
+
         numStepsTextView.setText(String.valueOf(DatabaseController.loadStepsForTheDay(getContext(),fDate)));
 
         anyChartView = root.findViewById(R.id.hourBarChart);
         anyChartView.setProgressBar(root.findViewById(R.id.loadingBar));
-        Log.d("ciao","ciao1");
         Cartesian cartesian = createColumnChart();
+        anyChartView.setBackgroundColor("#00000000");
         anyChartView.setChart(cartesian);
 
         Button bott =(Button)root.findViewById(R.id.button3);
@@ -104,7 +96,6 @@ public class DailyStepsFragment extends Fragment {
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         String fDate = formatter.format(calendar.getTime());
         stepsByHour=DatabaseController.loadStepsByHours(getContext(),fDate);
-        Log.d("ciao","ciao3");
         Map<Integer, Integer> graph_map = new TreeMap<>();
         for(int i=0;i<24;i++){
             graph_map.put(i,0);

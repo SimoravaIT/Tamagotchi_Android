@@ -1,6 +1,5 @@
 package com.example.androidapp;
 
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;

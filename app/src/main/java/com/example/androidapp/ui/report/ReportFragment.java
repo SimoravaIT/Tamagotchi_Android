@@ -31,6 +31,7 @@ public class ReportFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        container.removeAllViews();
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setHasOptionsMenu(true);
@@ -50,7 +51,7 @@ public class ReportFragment extends Fragment {
                 Fragment fragment= new DailyStepsFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment);
+                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 //Intent intent = new Intent(getActivity(), MainActivity2.class);

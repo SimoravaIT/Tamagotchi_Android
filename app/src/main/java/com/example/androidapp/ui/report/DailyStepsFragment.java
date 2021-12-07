@@ -74,6 +74,7 @@ public class DailyStepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         binding = FragmentDailyStepsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setHasOptionsMenu(true);
@@ -86,7 +87,7 @@ public class DailyStepsFragment extends Fragment {
                 Fragment fragment= new ReportFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment);
+                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 

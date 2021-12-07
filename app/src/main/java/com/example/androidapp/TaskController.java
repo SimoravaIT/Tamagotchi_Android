@@ -1,20 +1,8 @@
 package com.example.androidapp;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.provider.Settings;
-import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -28,9 +16,6 @@ import java.text.SimpleDateFormat;
 public class TaskController {
 
     public TaskController(Context context){
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-
         // New available tasks are generated as soon as one is completed
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();

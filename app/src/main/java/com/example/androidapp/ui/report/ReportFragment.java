@@ -31,7 +31,9 @@ public class ReportFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        container.removeAllViews();
+        if (container != null) {
+            container.removeAllViews();
+        }
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setHasOptionsMenu(true);
@@ -46,7 +48,6 @@ public class ReportFragment extends Fragment {
         dailyStepsTaskView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("changefragment","i clicked the steps of today");
 
                 Fragment fragment= new DailyStepsFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -54,8 +55,6 @@ public class ReportFragment extends Fragment {
                 fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-//Intent intent = new Intent(getActivity(), MainActivity2.class);
-                //startActivity(intent);
 
             }
         });

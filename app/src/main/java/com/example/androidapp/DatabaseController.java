@@ -268,6 +268,35 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return map;
     }
+    public static Map<Integer, Integer> loadStepsByHours(Context context,String date){
+        /**
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * hours and the integer are the steps done on those hours.
+         *
+         * @param context: application context
+         * @retutrn map: the Map with the hours and the steps done in those hours
+         */
+
+        Map<Integer, Integer>  map = new HashMap<>();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor=database.query("Step",new String [] {"hour","COUNT(*)"}, "day = ?", new String[]{date},"hour",null,"hour");
+        Log.d("ciao","ciao2");
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            Integer tmpKey = Integer.parseInt(cursor.getString(0));
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+
+        return map;
+    }
+
 
     public static int loadCountTotalSteps(Context context) {
         /**

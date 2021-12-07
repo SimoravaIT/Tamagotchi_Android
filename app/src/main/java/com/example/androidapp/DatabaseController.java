@@ -302,6 +302,29 @@ public class DatabaseController extends SQLiteOpenHelper {
         return dates.size();
     }
 
+    public List<Food> loadFoodList(Context context) {
+        // Returns the list of food
+        List<Food> foodList = new LinkedList<Food>();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor = database.query("Food", null, null, null, null,
+                null, null );
+
+        cursor.moveToFirst();
+        for(int i=0; i < cursor.getCount(); i++){
+            foodList.add(new Food(cursor.getInt(0), cursor.getString(1),
+                    cursor.getInt(2), cursor.getInt(3)));
+            cursor.moveToNext();
+        }
+
+        database.close();
+        cursor.close();
+
+        return foodList;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create tables
@@ -316,15 +339,14 @@ public class DatabaseController extends SQLiteOpenHelper {
         String CREATE_AVAILABLE_TASK = "CREATE TABLE AvailableTask " +
                 "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, 'completed' TEXT, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
         String CREATE_FOOD = "CREATE TABLE Food " +
-                "('key' INTEGER PRIMARY KEY, 'happinessLevel' INTEGER, 'price' INTEGER);";
+                "('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happinessLevel' INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_FOOD = "CREATE TABLE AvailableFood " +
                 "('key' INTEGER PRIMARY KEY, 'food.key' INTEGER, FOREIGN KEY ('key') REFERENCES Food('food.key'));";
         String CREATE_MEDICINE = "CREATE TABLE Medicine " +
-                "('key' INTEGER PRIMARY KEY, sicknessLevel INTEGER, 'price' INTEGER);";
+                "('key' INTEGER PRIMARY KEY, 'name' TEXT, sicknessLevel INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
         String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
-
 
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_STEP);
@@ -336,7 +358,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL(CREATE_AVAILABLE_MEDICINE);
         db.execSQL(CREATE_PET);
 
-        // Insert data
+        // Insert data about tasks
         db.execSQL("INSERT INTO User ('key', 'money') " +
                 "VALUES (0, 10)");
 
@@ -350,6 +372,16 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "VALUES (3, 'Expose under sun for 30 mins', '25')");
         db.execSQL("INSERT INTO Task ('key', 'description', 'reward', 'numSteps') " +
                 "VALUES (4, 'Do 100 steps', '10', 100)");
+
+        // Insert data about food
+        db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
+                "VALUES (0, 'Banana', '15', '15')");
+        db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
+                "VALUES (0, 'Steak', '50', '50')");
+        db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
+                "VALUES (0, 'Milk', '10', '10')");
+        db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
+                "VALUES (0, 'Salad', '5', '5')");
     }
 
     @Override

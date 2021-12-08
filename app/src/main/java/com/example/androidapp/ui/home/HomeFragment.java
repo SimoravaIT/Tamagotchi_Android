@@ -26,8 +26,6 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        final TextView textView = binding.textHome;
-        textView.setText("this is Home fragment");
         if(MainActivity.sensorController==null){
             MainActivity.sensorController = new SensorController(getContext());
         }

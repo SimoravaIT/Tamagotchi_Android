@@ -211,7 +211,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         return numSteps;
     }
 
-    public static int loadStepsBetweenDates(Context context, String date1, String date2){
+    /*public static int loadStepsBetweenDates(Context context, String date1, String date2){
         /**
          * Utility function that return the number of steps done between 2 dates in format YYYY-MM-DD
          *
@@ -220,7 +220,7 @@ public class DatabaseController extends SQLiteOpenHelper {
          * @param date2: finish date
          * @return int: the number steps done between the 2 days
          */
-
+/*
         List<String> dates = new LinkedList<String>();
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -235,11 +235,9 @@ public class DatabaseController extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         database.close();
-        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates));
-        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates.size()));
         return dates.size();
-    }
-    public static Map<String, Integer> loadStepsBy30Day(Context context,String date1, String date2){
+    }*/
+    public static Map<String, Integer> loadStepsByDates(Context context,String date1, String date2){
         /**
          * Utility function to obtain a Map<string,Integer>  where the string represent the different
          * days and the integer are the steps done on those day from the 2 date in input.

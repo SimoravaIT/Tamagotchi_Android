@@ -62,7 +62,7 @@ public class MonthStepFragment extends Fragment {
         jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);
-        numStepsTextView.setText(String.valueOf(DatabaseController.loadStepsBetweenDates(getContext(),dateStart,dateEnd)));
+        numStepsTextView.setText(String.valueOf(DatabaseController.loadStepsByDates(getContext(),dateStart,dateEnd).size()));
 
 
         anyChartView = root.findViewById(R.id.monthBarChart);
@@ -94,7 +94,7 @@ public class MonthStepFragment extends Fragment {
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);
 
-        stepsby30Days=DatabaseController.loadStepsBy30Day(getContext(),dateStart,dateEnd);
+        stepsby30Days=DatabaseController.loadStepsByDates(getContext(),dateStart,dateEnd);
         Map<String, Integer> graph_map = new TreeMap<>();
         graph_map.putAll(stepsby30Days);
         List<DataEntry> data = new ArrayList<>();

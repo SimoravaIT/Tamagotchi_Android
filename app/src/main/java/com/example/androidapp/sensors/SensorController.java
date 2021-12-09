@@ -62,7 +62,7 @@ public class SensorController {
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
         Log.d("DATES","range searched->  "+dateStart+"  to  "+dateEnd);
-        return DatabaseController.loadStepsBetweenDates(context,dateStart,dateEnd);
+        return DatabaseController.loadStepsByDates(context,dateStart,dateEnd).size();
     }
     public static int getTotalSteps(Context context){
         return DatabaseController.loadCountTotalSteps(context);

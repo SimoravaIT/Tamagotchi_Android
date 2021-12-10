@@ -165,6 +165,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
     public static void updateUser(Context context, User user) {
+        // Update the user's wallet
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -321,6 +322,33 @@ public class DatabaseController extends SQLiteOpenHelper {
         return foodList;
     }
 
+    public static Pet loadPet(Context context) {
+        // Return the pet
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        Cursor cursor = database.query("Pet", null, null, null, null,
+                null, null );
+
+        // It is assumed that only one pet can exists in the db
+        cursor.moveToFirst();
+        Pet pet = new Pet(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
+
+        cursor.close();
+        database.close();
+
+        return pet;
+    }
+
+    public static void updatePet(Context context, Pet pet) {
+        // Update the pet happiness
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("happiness", pet.getHappiness());
+        database.update("Pet", cv,"key=?", new String[]{String.valueOf(pet.getKey())});
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create tables
@@ -378,6 +406,11 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "VALUES (2, 'Milk', '10', '10')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
                 "VALUES (3, 'Salad', '5', '5')");
+
+        // Insert the pet
+        // TODO: User must choose the name of the pet!
+        db.execSQL("INSERT INTO Pet ('key', 'name', 'happiness') " +
+                "VALUES (0, 'Colombo', 70)");
     }
 
     @Override

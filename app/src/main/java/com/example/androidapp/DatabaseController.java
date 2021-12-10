@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -332,7 +335,13 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         // It is assumed that only one pet can exists in the db
         cursor.moveToFirst();
-        Pet pet = new Pet(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
+        Pet pet = null;
+        try {
+            pet = new Pet(cursor.getInt(0), cursor.getString(1),
+                    cursor.getInt(2), new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(cursor.getString(3)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         cursor.close();
         database.close();
@@ -346,6 +355,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("happiness", pet.getHappiness());
+        cv.put("lastUpdate", String.valueOf(Calendar.getInstance().getTime()));
         database.update("Pet", cv,"key=?", new String[]{String.valueOf(pet.getKey())});
     }
 
@@ -370,7 +380,7 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "('key' INTEGER PRIMARY KEY, 'name' TEXT, sicknessLevel INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
-        String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER);";
+        String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER, 'lastUpdate' TIMESTAMP);";
 
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_STEP);

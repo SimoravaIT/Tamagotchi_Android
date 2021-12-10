@@ -21,8 +21,6 @@ public class SensorController {
     static int stepsCompleted = 0;
 
     public SensorController(Context context) {
-
-        Log.d("STEPSENSOR: ", "sensor controller created");
         SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         Sensor mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         Sensor mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
@@ -61,7 +59,7 @@ public class SensorController {
         jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
-        Log.d("DATES","range searched->  "+dateStart+"  to  "+dateEnd);
+
         return DatabaseController.loadStepsByDates(context,dateStart,dateEnd).size();
     }
     public static int getTotalSteps(Context context){

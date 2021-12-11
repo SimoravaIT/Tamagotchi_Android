@@ -28,7 +28,7 @@ import java.util.TimerTask;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private RelativeLayout relativeScreenLayout;
+    private RelativeLayout chic_walking_area;
     private GifImageView chic;
     private int x_chic, y_chic;
     private int next_x_direction, next_y_direction;
@@ -43,14 +43,21 @@ public class HomeFragment extends Fragment {
             MainActivity.sensorController = new SensorController(getContext());
         }
 
-        // RelativeLayout. though you can use xml RelativeLayout here too by `findViewById()`
-        relativeScreenLayout = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
-        // ImageView
+        // Screen Relativelayout and Chic GitImageView
+        chic_walking_area = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
         chic = (GifImageView) root.findViewById(R.id.chic);
+
+        // start the animation
+        startAnimation(chic_walking_area, chic);
+
+        return root;
+    }
+
+    public void startAnimation(RelativeLayout area, GifImageView chic) {
         // position init
         x_chic = 200;
         y_chic = 100;
-        // frame init
+        // animation frame init
         animation_frame = 0;
         animation_frameSet_size = 10;
 
@@ -61,26 +68,30 @@ public class HomeFragment extends Fragment {
             public void run() {
                 if (activity != null) {
                     activity.runOnUiThread( ()-> {
-                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100);
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120, 120);
 
                         if (animation_frame == 0) {
+                            // random the direction, -1 -> left, 0 -> remain, 1 -> right
                             next_x_direction = new Random().nextInt(3) + -1;
                             next_y_direction = new Random().nextInt(3) + -1;
+                            // constrain chic walking area, if chic is out of range, then change direction
                             if (x_chic > 190) next_x_direction = -1;
                             if (x_chic < 50) next_x_direction = 1;
                             if (y_chic > 110) next_y_direction = -1;
                             if (y_chic < 50) next_y_direction = 1;
+                            // horizontally flip the img based on direction
                             if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
                         }
 
+                        // change chic x, y based on the direction
                         x_chic += next_x_direction*5;
                         y_chic += next_y_direction*5;
-
                         layoutParams.leftMargin = x_chic;
                         layoutParams.topMargin = y_chic;
 
-                        relativeScreenLayout.removeAllViews();
-                        relativeScreenLayout.addView(chic, layoutParams);
+                        // update the view
+                        area.removeAllViews();
+                        area.addView(chic, layoutParams);
 
                         animation_frame++;
                         animation_frame%=animation_frameSet_size;
@@ -88,9 +99,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }, 0, 300);
-
-
-        return root;
     }
 
     @Override

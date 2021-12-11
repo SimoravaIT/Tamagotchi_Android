@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.androidapp.R;
+import com.example.androidapp.databinding.FragmentReportBinding;
+import com.example.androidapp.sensors.SensorController;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.androidapp.R;
-import com.example.androidapp.databinding.FragmentReportBinding;
-import com.example.androidapp.sensors.SensorController;
 
 
 public class ReportFragment extends Fragment {

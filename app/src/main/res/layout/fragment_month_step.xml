@@ -9,38 +9,40 @@
 
     <com.anychart.AnyChartView
         android:id="@+id/monthBarChart"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingHorizontal="25dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="25dp"
+        android:background="@drawable/report_plot_curve"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.299" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/loadingMonthBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
+        android:indeterminateTint="@color/primary_blue"
+        app:layout_constraintBottom_toBottomOf="@id/monthBarChart"
+        app:layout_constraintEnd_toEndOf="@id/monthBarChart"
+        app:layout_constraintStart_toStartOf="@id/monthBarChart"
+        app:layout_constraintTop_toTopOf="@id/monthBarChart" />
 
     <Button
         android:id="@+id/buttonBackMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/task_background_curve"
+        android:fontFamily="@font/rock_salt"
         android:text="Back"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/monthBarChart" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"

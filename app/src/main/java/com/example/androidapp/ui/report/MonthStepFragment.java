@@ -90,14 +90,15 @@ public class MonthStepFragment extends Fragment {
         for (Map.Entry<String,Integer> entry : graph_map.entrySet())
             data.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
         Column column = cartesian.column(data);
-        column.fill("#1EB980");
-        column.stroke("#1EB980");
+        column.fill("#74c5d6");
+        column.stroke("#74c5d6");
 
         column.tooltip()
-                .titleFormat("At day: {%X}")
+                .titleFormat("{%X}")
                 .format("{%Value}{groupsSeparator: } Steps")
-                .anchor(Anchor.RIGHT_TOP);
-        column.tooltip().position(Position.RIGHT_TOP).offsetX(0d).offsetY(5);
+                .anchor(Anchor.RIGHT_TOP)
+                .background("#da0a95");
+        column.tooltip().position(Position.RIGHT_TOP).offsetX(0d).offsetY(0);
 
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);

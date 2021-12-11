@@ -6,27 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.report.ReportFragment">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:text="Click to see more details!"
+        android:textColor="@color/primary_blue"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/stepRowToday"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/stepRowToday"
         android:layout_width="330dp"
         android:layout_height="0dp"
+        android:layout_marginTop="-8dp"
         android:background="@drawable/report_background_curve"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <TextView
             android:id="@+id/todayStepTitle"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
             android:paddingHorizontal="25dp"
+            android:paddingVertical="5dp"
             android:text="@string/today_step_title"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -39,52 +52,10 @@
             android:text="6899"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/coinBackground"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:src="@drawable/ic_coin"
-        app:layout_constraintBottom_toBottomOf="@+id/coinEarnLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/coinEarnLayout" />
-
-    <LinearLayout
-        android:id="@+id/coinEarnLayout"
-        android:layout_width="330dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/report_background_curve"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepRowToday">
-
-        <TextView
-            android:id="@+id/coinEarnTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/press_start_2p"
-            android:text="COIN EARNED"
-            android:textColor="@color/accent_pink"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/coinEarnVal"
-            android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:fontFamily="@font/press_start_2p"
-            android:text="52"
-            android:textColor="@color/accent_pink"
-            android:textSize="72sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/stepRowWeek"
@@ -96,17 +67,18 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinEarnLayout">
+        app:layout_constraintTop_toBottomOf="@+id/stepRowToday">
 
         <TextView
             android:id="@+id/weekStepTitle"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
             android:paddingHorizontal="25dp"
+            android:paddingVertical="5dp"
             android:text="@string/week_step_title"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -119,14 +91,14 @@
             android:text="324567"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/stepRowTotal"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/report_background_curve"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -136,13 +108,14 @@
 
         <TextView
             android:id="@+id/totalStepTitle"
-            android:layout_width="180dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
             android:paddingHorizontal="25dp"
+            android:paddingVertical="5dp"
             android:text="@string/monthly_step_title"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -155,20 +128,9 @@
             android:text="6624567"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/arrowDown"
-        android:layout_width="150dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="-8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_arrow_down"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepRowToday" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

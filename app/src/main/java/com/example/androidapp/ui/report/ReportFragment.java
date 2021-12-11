@@ -2,7 +2,6 @@ package com.example.androidapp.ui.report;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.androidapp.MainActivity;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentReportBinding;
 import com.example.androidapp.sensors.SensorController;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class ReportFragment extends Fragment {
@@ -27,7 +24,7 @@ public class ReportFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private static TextView monthlyStepsTaskView;
     @SuppressLint("StaticFieldLeak")
-    private static TextView totalStepsTaskView;
+    private static TextView weeklyStepsTaskView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,13 +34,14 @@ public class ReportFragment extends Fragment {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setHasOptionsMenu(true);
-        dailyStepsTaskView = (TextView) root.findViewById(R.id.numberTodayStep);
-        monthlyStepsTaskView =(TextView) root.findViewById(R.id.numberMonthStep);
-        totalStepsTaskView=(TextView) root.findViewById(R.id.numberTotalStep);
 
-        totalStepsTaskView.setText(String.valueOf(SensorController.getTotalSteps(getContext())));
-        monthlyStepsTaskView.setText(String.valueOf(SensorController.getMonthlySteps(getContext())));
+        dailyStepsTaskView = (TextView) root.findViewById(R.id.numberTodayStep);
+        weeklyStepsTaskView=(TextView) root.findViewById(R.id.numberWeekSteps);
+        monthlyStepsTaskView =(TextView) root.findViewById(R.id.numberMonthStep);
+
         dailyStepsTaskView.setText(String.valueOf(SensorController.getDailySteps(getContext())));
+        weeklyStepsTaskView.setText(String.valueOf(SensorController.getWeeklySteps(getContext())));
+        monthlyStepsTaskView.setText(String.valueOf(SensorController.getMonthlySteps(getContext())));
 
         dailyStepsTaskView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +57,10 @@ public class ReportFragment extends Fragment {
             }
         });
 
-        totalStepsTaskView.setOnClickListener(new View.OnClickListener() {
+        weeklyStepsTaskView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment= new TotalStepsFragment();
+                Fragment fragment= new WeekStepsFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
@@ -76,7 +74,6 @@ public class ReportFragment extends Fragment {
         monthlyStepsTaskView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Fragment fragment= new MonthStepFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -91,18 +88,17 @@ public class ReportFragment extends Fragment {
     }
 
     public static void showDailySteps(int value) {
-
         dailyStepsTaskView.setText(String.valueOf(value));
     }
 
-    public static void showMonthlySteps(int value){
+    public static void showWeeklySteps(int value){
+        weeklyStepsTaskView.setText(String.valueOf(value));
+    }
 
+    public static void showMonthlySteps(int value){
         monthlyStepsTaskView.setText(String.valueOf(value));
     }
-    public static void showTotalSteps(int value){
 
-        totalStepsTaskView.setText(String.valueOf(value));
-    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

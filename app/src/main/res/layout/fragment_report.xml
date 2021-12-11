@@ -110,7 +110,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/numberMonthStep"
+            android:id="@+id/numberWeekSteps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -140,13 +140,13 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
             android:paddingHorizontal="25dp"
-            android:text="@string/total_step_title"
+            android:text="@string/monthly_step_title"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/numberTotalStep"
+            android:id="@+id/numberMonthStep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

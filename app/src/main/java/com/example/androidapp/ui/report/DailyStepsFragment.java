@@ -39,7 +39,6 @@ import java.util.TreeMap;
 public class DailyStepsFragment extends Fragment {
 
     public Map<Integer, Integer> stepsByHour = null;
-    public TextView numStepsTextView;
     public AnyChartView anyChartView;
     private FragmentDailyStepsBinding binding;
     @Override
@@ -58,10 +57,6 @@ public class DailyStepsFragment extends Fragment {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         String fDate = formatter.format(calendar.getTime());
-
-        numStepsTextView = root.findViewById(R.id.today_steps_stat);
-
-        numStepsTextView.setText(String.valueOf(DatabaseController.loadStepsForTheDay(getContext(),fDate)));
 
         anyChartView = root.findViewById(R.id.hourBarChart);
         anyChartView.setProgressBar(root.findViewById(R.id.loadingBar));

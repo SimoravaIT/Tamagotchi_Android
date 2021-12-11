@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.report.TotalStepsFragment">
+    tools:context=".ui.report.WeekStepsFragment">
 
 
     <com.anychart.AnyChartView
-        android:id="@+id/totalBarChart"
+        android:id="@+id/weekBarChart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintVertical_bias="0.315" />
 
     <ProgressBar
-        android:id="@+id/loadingTotalBar"
+        android:id="@+id/weekProgresBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
 
 
     <Button
-        android:id="@+id/buttonBackTotal"
+        android:id="@+id/buttonBackWeek"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -54,22 +54,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="99dp"
-        android:layout_height="31dp"
-        android:text="steps of today"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/total_steps_stat"
-        android:layout_width="76dp"
-        android:layout_height="28dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

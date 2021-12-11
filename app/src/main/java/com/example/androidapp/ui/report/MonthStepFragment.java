@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,7 @@ import com.anychart.enums.TooltipPositionMode;
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.R;
 import com.example.androidapp.databinding.FragmentMonthStepBinding;
-import com.example.androidapp.databinding.FragmentTotalStepsBinding;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,8 +39,7 @@ import java.util.TreeMap;
 public class MonthStepFragment extends Fragment {
     public Map<String, Integer> stepsby30Days = null;
     private FragmentMonthStepBinding binding;
-    public Map<String, Integer> stepByDays = null;
-    public TextView numStepsTextView;
+
     public AnyChartView anyChartView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,16 +52,6 @@ public class MonthStepFragment extends Fragment {
         binding = FragmentMonthStepBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setHasOptionsMenu(true);
-
-
-        numStepsTextView = root.findViewById(R.id.month_steps_stat);
-        long timeInMillis1 = System.currentTimeMillis();
-        long timeInMillis2 = System.currentTimeMillis()-(long)30*1000*60*60*24;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-        String dateEnd = jdf.format(timeInMillis1).substring(0, 10);
-        String dateStart = jdf.format(timeInMillis2).substring(0, 10);
-        numStepsTextView.setText(String.valueOf(DatabaseController.loadStepsByDates(getContext(),dateStart,dateEnd).size()));
 
 
         anyChartView = root.findViewById(R.id.monthBarChart);

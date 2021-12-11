@@ -56,20 +56,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="99dp"
-        android:layout_height="31dp"
-        android:text="steps of today"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/today_steps_stat"
-        android:layout_width="174dp"
-        android:layout_height="33dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

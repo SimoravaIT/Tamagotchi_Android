@@ -46,6 +46,10 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
         TaskController tc = new TaskController(root.getContext());
 
+        // A nice addition here would be to add the evident option to refresh this check,
+        // like a refresh button on the UI or the 'pull to refresh' functionality.
+        tc.completeTasks(root.getContext()); // this returns a boolean so if it is true, notify the user on the UI
+
         tasksList = databaseHelper.loadAvailableTasks(root.getContext());
         ArrayList<Task> array_list_tasks=new ArrayList<>();
         array_list_tasks.addAll(tasksList);
@@ -63,8 +67,8 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       Log.i("TaskFragment", "You clicked Item: " + id + " at position:" + position);
        Task selected_task= tasksList.get(position);
+
         if(selected_task.isCompleted()==false)
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
         else

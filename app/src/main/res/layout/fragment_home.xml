@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
         android:drawableLeft="@drawable/ic_coin_32dp"
         android:drawablePadding="10dp"
         android:fontFamily="@font/bungee"
@@ -21,29 +22,30 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/egg_home" />
 
     <ImageView
         android:id="@+id/egg_home"
-        android:layout_width="440dp"
-        android:layout_height="512dp"
-        android:layout_marginTop="-32dp"
-        android:src="@drawable/ic_egg"
+        android:layout_width="450dp"
+        android:layout_height="540dp"
 
+        android:layout_marginBottom="96dp"
+        android:src="@drawable/ic_egg"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/coin_home" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/main_screen"
         android:layout_width="220dp"
         android:layout_height="250dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/home_screen_curve"
         app:layout_constraintBottom_toBottomOf="@+id/egg_home"
-        app:layout_constraintEnd_toEndOf="@+id/egg_home"
-        app:layout_constraintStart_toStartOf="@+id/egg_home"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/egg_home" />
 
     <TextView
         android:id="@+id/gray_ground_img"

@@ -32,7 +32,9 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        if (container != null) {
+            container.removeAllViews();
+        }
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);

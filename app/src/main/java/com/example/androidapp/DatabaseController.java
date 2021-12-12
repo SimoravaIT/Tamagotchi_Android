@@ -2,12 +2,11 @@ package com.example.androidapp;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -221,33 +220,36 @@ public class DatabaseController extends SQLiteOpenHelper {
         return numSteps;
     }
 
-    public static int loadStepsBetweenDates(Context context, String date1, String date2){
+    public static Map<String, Integer> loadStepsByDates(Context context,String date1, String date2){
         /**
-         * Utility function that return the number of steps done between 2 dates in format YYYY-MM-DD
-         *
-         * @param context: application context
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * days and the integer are the steps done on those day from the 2 date in format YYYY-MM-DD
+         * in input.
          * @param date1: start date
          * @param date2: finish date
-         * @return int: the number steps done between the 2 days
+         * @param context: application context
+         * @retutrn map: the Map with the days and the steps done in those days
          */
 
-        List<String> dates = new LinkedList<String>();
+        Map<String, Integer>  map = new HashMap<>();
+
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         String[] args= new String[]{date1,date2};
-        Cursor cursor = database.query("Step",  new String[]{"day"},
-                "day BETWEEN ? AND ?", args, null,
-                null, null );
+        Cursor cursor=database.query("Step",new String [] {"day","COUNT(*)"},"day BETWEEN ? AND ?", args,"day",null,"day");
 
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
-            dates.add(cursor.getString(0));
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            map.put(tmpKey, tmpValue);
             cursor.moveToNext();
         }
+        cursor.close();
         database.close();
-        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates));
-        Log.d("STORED TIMESTAMPS: ", String.valueOf(dates.size()));
-        return dates.size();
+
+        return map;
     }
     public static Map<String, Integer> loadStepsByDay(Context context){
         /**
@@ -278,6 +280,34 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return map;
     }
+    public static Map<Integer, Integer> loadStepsByHours(Context context,String date){
+        /**
+         * Utility function to obtain a Map<string,Integer>  where the string represent the different
+         * hours and the integer are the steps done on those hours.
+         *
+         * @param context: application context
+         * @retutrn map: the Map with the hours and the steps done in those hours
+         */
+
+        Map<Integer, Integer>  map = new HashMap<>();
+
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        Cursor cursor=database.query("Step",new String [] {"hour","COUNT(*)"}, "day = ?", new String[]{date},"hour",null,"hour");
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            Integer tmpKey = Integer.parseInt(cursor.getString(0));
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+
+        return map;
+    }
+
 
     public static int loadCountTotalSteps(Context context) {
         /**
@@ -292,7 +322,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         Cursor cursor = database.query("Step",  new String[]{"day"},
                 null, null, null,
                 null, null );
-
         cursor.moveToFirst();
         for (int index=0; index < cursor.getCount(); index++){
             dates.add(cursor.getString(0));

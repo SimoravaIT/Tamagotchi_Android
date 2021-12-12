@@ -7,6 +7,9 @@
     <string name="coin_state">0</string>
     <string name="today_step_title">DAILY STEPS:</string>
     <string name="week_step_title">WEEKLY STEPS:</string>
+    <string name="today_step_title">TODAY STEP:</string>
+    <string name="total_step_title">TOTAL STEP:</string>
+    <string name="happiness_title">HAPPINESS</string>
     <string name="example_task_reward">20</string>
     <string name="example_task_description">Expose under the sun for 30 min and walk for 200km</string>
     <string name="monthly_step_title">MONTHLY STEPS:</string>

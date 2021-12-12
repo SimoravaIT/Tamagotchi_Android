@@ -16,8 +16,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import pl.droidsonroids.gif.GifImageView;
 
+import com.example.androidapp.DatabaseController;
 import com.example.androidapp.MainActivity;
 import com.example.androidapp.R;
+import com.example.androidapp.User;
 import com.example.androidapp.databinding.FragmentHomeBinding;
 import com.example.androidapp.sensors.SensorController;
 
@@ -46,7 +48,9 @@ public class HomeFragment extends Fragment {
         if(MainActivity.sensorController==null){
             MainActivity.sensorController = new SensorController(getContext());
         }
-
+        User user= DatabaseController.loadUser(getContext());
+        TextView homeCoins = (TextView) root.findViewById(R.id.coin_home);
+        homeCoins.setText(String.valueOf(user.getMoney()));
         // Screen Relativelayout and Chic GitImageView
         chic_walking_area = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
         chic = (GifImageView) root.findViewById(R.id.chic);

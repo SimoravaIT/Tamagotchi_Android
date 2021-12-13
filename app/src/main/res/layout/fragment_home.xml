@@ -94,7 +94,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/happiness_progressbar_container"
-        android:drawableTop="@drawable/ic_branch"
+        android:drawableTop="@drawable/ic_wheat"
         android:gravity="center"
 
         android:paddingVertical="10dp"
@@ -134,7 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/gray_ground_img" />
 
     <LinearLayout
-        android:id="@+id/food_group"
+        android:id="@+id/food_linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -148,7 +148,7 @@
             android:id="@+id/food_selected_1"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_branch"
+            android:src="@drawable/ic_wheat"
             app:tint="@color/wheat" />
 
         <ImageView
@@ -156,14 +156,14 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_branch"
+            android:src="@drawable/ic_wheat"
             app:tint="@color/wheat" />
 
         <ImageView
             android:id="@+id/food_selected_3"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_branch"
+            android:src="@drawable/ic_wheat"
             app:tint="@color/wheat" />
 
         <ImageView
@@ -171,14 +171,14 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_branch"
+            android:src="@drawable/ic_wheat"
             app:tint="@color/wheat" />
 
         <ImageView
             android:id="@+id/food_selected_5"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_branch"
+            android:src="@drawable/ic_wheat"
             app:tint="@color/wheat" />
 
     </LinearLayout>

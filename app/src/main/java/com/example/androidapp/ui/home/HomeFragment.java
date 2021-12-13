@@ -1,6 +1,7 @@
 package com.example.androidapp.ui.home;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,21 +27,19 @@ import com.example.androidapp.sensors.SensorController;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private RelativeLayout chic_walking_area;
     private GifImageView chic, heart;
-    private LinearLayout food_group;
-    private ImageView food_1, food_2, food_3, food_4, food_5;
-    private RelativeLayout.LayoutParams lp_bird, lp_heart;
-    private int x_chic, y_chic;
-    private int next_x_direction, next_y_direction;
+    private LinearLayout food_linearLayout;
+    private ArrayList<ImageView> foods;
+    private RelativeLayout.LayoutParams lp_chic, lp_heart;
+    private int x_chic, y_chic, next_x_direction, next_y_direction;
     private int animation_frame, animation_frameSet_size;
-    private int eating_period;
-    private String chic_state;
-    private String food_selected;
+    private String chic_state, food_selected;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,33 +57,27 @@ public class HomeFragment extends Fragment {
         chic_walking_area = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
         chic = (GifImageView) root.findViewById(R.id.chic);
         heart = (GifImageView) root.findViewById(R.id.heart);
-        food_group = (LinearLayout) root.findViewById(R.id.food_group);
-        food_1 = (ImageView) root.findViewById(R.id.food_selected_1);
-        food_2 = (ImageView) root.findViewById(R.id.food_selected_2);
-        food_3 = (ImageView) root.findViewById(R.id.food_selected_3);
-        food_4 = (ImageView) root.findViewById(R.id.food_selected_4);
-        food_5 = (ImageView) root.findViewById(R.id.food_selected_5);
-        lp_bird = new RelativeLayout.LayoutParams(160, 160);
+        food_linearLayout = (LinearLayout) root.findViewById(R.id.food_linearLayout);
+        foods = new ArrayList<ImageView>();
+        for(int i = 0; i < 5; i++) foods.add((ImageView) food_linearLayout.getChildAt(i));
+        lp_chic = new RelativeLayout.LayoutParams(160, 160);
         lp_heart = new RelativeLayout.LayoutParams(120, 120);
 
         // start the animation
-        startAnimation(chic_walking_area, chic);
+        startAnimation();
 
         return root;
     }
 
-    public void startAnimation(RelativeLayout area, GifImageView chic) {
+    public void startAnimation() {
         // position init
         x_chic = 50;
-        y_chic = 200;
+        y_chic = 100;
         // animation frame init
         animation_frame = 0;
         animation_frameSet_size = 15;
-        eating_period = 0;
-        // chic state and food init
-        chic_state = "walking_to_food";
-        food_selected = "worm";
-
+        // chic state
+        chic_state = "idle";
 
         Timer mTimer = new Timer();
         Activity activity = getActivity();
@@ -94,105 +87,70 @@ public class HomeFragment extends Fragment {
                 if (activity != null) {
                     activity.runOnUiThread( ()-> {
                         if (chic_state == "idle") {
+
                             if (animation_frame == 0) {
-                                // random the direction, -1 -> left, 0 -> remain, 1 -> right
-                                next_x_direction = new Random().nextInt(3) + -1;
-                                next_y_direction = new Random().nextInt(3) + -1;
-                                // constrain chic walking area, if chic is out of range, then change direction
-                                if (x_chic > 300) next_x_direction = -1;
-                                if (x_chic < 30) next_x_direction = 1;
-                                if (y_chic > 200) next_y_direction = -1;
-                                if (y_chic < 30) next_y_direction = 1;
-                                // horizontally flip the img based on direction
-                                if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
+                                randomDirection(true, true);
                             }
-
-                            // change chic x, y based on the direction
-                            x_chic += next_x_direction*5;
-                            y_chic += next_y_direction*5;
-                            lp_bird.leftMargin = x_chic;
-                            lp_bird.topMargin = y_chic;
-
-                            // update the view
-                            area.removeAllViews();
-                            area.addView(chic, lp_bird);
-
+                            updatePosition(true, false);
                             animation_frame++;
                             animation_frame%=animation_frameSet_size;
+
                         } else if (chic_state == "walking_to_food") {
-                            if (food_group.getVisibility() == View.INVISIBLE) {
-                                if (food_selected == "branch") {
-                                    food_1.setImageResource(R.drawable.ic_branch);
-                                    food_2.setImageResource(R.drawable.ic_branch);
-                                    food_3.setImageResource(R.drawable.ic_branch);
-                                    food_4.setImageResource(R.drawable.ic_branch);
-                                    food_5.setImageResource(R.drawable.ic_branch);
-                                } else if (food_selected == "worm") {
-                                    food_1.setImageResource(R.drawable.ic_worm);
-                                    food_2.setImageResource(R.drawable.ic_worm);
-                                    food_3.setImageResource(R.drawable.ic_worm);
-                                    food_4.setImageResource(R.drawable.ic_worm);
-                                    food_5.setImageResource(R.drawable.ic_worm);
-                                } else if (food_selected == "lettuce") {
-                                    food_1.setImageResource(R.drawable.ic_lettuce);
-                                    food_2.setImageResource(R.drawable.ic_lettuce);
-                                    food_3.setImageResource(R.drawable.ic_lettuce);
-                                    food_4.setImageResource(R.drawable.ic_lettuce);
-                                    food_5.setImageResource(R.drawable.ic_lettuce);
+
+                            if (food_linearLayout.getVisibility() == View.INVISIBLE) {
+                                switch (food_selected){
+                                    case "branch":
+                                        for (ImageView food: foods) {
+                                            food.setImageResource(R.drawable.ic_branch);
+                                            food.setColorFilter(getResources().getColor(R.color.wheat));
+                                        }
+                                        break;
+                                    case "worm":
+                                        for (ImageView food: foods) {
+                                            food.setImageResource(R.drawable.ic_worm);
+                                            food.setColorFilter(getResources().getColor(R.color.worm));
+                                        }
+                                        break;
+                                    case "lettuce":
+                                        for (ImageView food: foods) {
+                                            food.setImageResource(R.drawable.ic_lettuce);
+                                            food.setColorFilter(getResources().getColor(R.color.lettuce));
+                                        }
+                                        break;
                                 }
-                                food_group.setVisibility(View.VISIBLE);
+                                food_linearLayout.setVisibility(View.VISIBLE);
                             }
-                            if (Math.abs(170 - x_chic) > 40 || Math.abs(85 - y_chic) > 10) {
-                                next_x_direction = 0;
-                                next_y_direction = 0;
-                                if (170 - x_chic > 40)  next_x_direction = 1;
-                                if (170 - x_chic < -40)  next_x_direction = -1;
-                                if (85 - y_chic > 10)  next_y_direction = 1;
-                                if (85 - y_chic < -10)  next_y_direction = -1;
-                                if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
-                                x_chic += next_x_direction*5;
-                                y_chic += next_y_direction*5;
-                                lp_bird.leftMargin = x_chic;
-                                lp_bird.topMargin = y_chic;
-                                area.removeAllViews();
-                                area.addView(chic, lp_bird);
-                            } else {
+
+                            checkDirection(170, 85, 40, 10);
+                            updatePosition(true, false);
+
+                            if (next_x_direction == 0 && next_y_direction == 0) {
                                 chic.setImageResource(R.drawable.chic_eating_animation);
                                 chic_state = "eating";
                             }
+
                         } else if (chic_state == "eating") {
-                            if (heart.getVisibility() == View.INVISIBLE) {
-                                heart.setVisibility(View.VISIBLE);
-                            }
+
+                            // control what to do in specific animation frame
                             if (animation_frame == 0) {
-                                next_x_direction = new Random().nextInt(3) + -1;
-                                if (x_chic > 300) next_x_direction = -1;
-                                if (x_chic < 30) next_x_direction = 1;
-                                if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
+                                randomDirection(true, false);
                                 chic.setImageResource(R.drawable.chic_walking_animation);
                             } else if (animation_frame < 3 && next_x_direction != 0) {
-                                x_chic += next_x_direction*5;
-                                lp_bird.leftMargin = x_chic;
-                                lp_heart.leftMargin = x_chic + 110;
-                                lp_heart.topMargin = y_chic - 55;
-                                area.removeAllViews();
-                                area.addView(chic, lp_bird);
-                                area.addView(heart, lp_heart);
-
+                                updatePosition(true, true);
                             } else if (animation_frame == 3) {
                                 chic.setImageResource(R.drawable.chic_eating_animation);
                             } else if (animation_frame > 3) {
-                                heart.setVisibility(View.VISIBLE);
-                                food_group.setAlpha((float)(food_group.getAlpha()*0.99));
+                                food_linearLayout.setAlpha((float)(food_linearLayout.getAlpha()*0.98));
                             }
+
                             animation_frame++;
-                            eating_period++;
                             animation_frame%=animation_frameSet_size;
-                            if (eating_period > 200) {
+
+                            // if the food is almost finished, then change chic state to idle
+                            if (food_linearLayout.getAlpha() < 0.1) {
                                 chic.setImageResource(R.drawable.chic_walking_animation);
-                                area.removeAllViews();
-                                area.addView(chic, lp_bird);
-                                food_group.setVisibility(View.INVISIBLE);
+                                food_linearLayout.setVisibility(View.INVISIBLE);
+                                food_linearLayout.setAlpha(1);
                                 heart.setVisibility(View.INVISIBLE);
                                 chic_state = "idle";
                             }
@@ -201,6 +159,71 @@ public class HomeFragment extends Fragment {
                 }
             }
         }, 0, 100);
+    }
+
+    public void feedingAnimation(String food){
+        chic_state = "walking_to_food";
+        food_selected = food;
+    }
+
+    public void updatePosition(boolean updateChic, boolean updateHeart) {
+        if (updateChic) {
+            // change chic x, y based on the direction
+            x_chic += next_x_direction*5;
+            y_chic += next_y_direction*5;
+            lp_chic.leftMargin = x_chic;
+            lp_chic.topMargin = y_chic;
+
+            // update the view
+            chic.setLayoutParams(lp_chic);
+        }
+        if (updateHeart) {
+            // check visibility
+            if (heart.getVisibility() == View.INVISIBLE) heart.setVisibility(View.VISIBLE);
+
+            // change chic x, y based on the direction
+            lp_heart.leftMargin = x_chic + 110;
+            lp_heart.topMargin = y_chic - 55;
+
+            // update the view
+            heart.setLayoutParams(lp_heart);
+        }
+    }
+
+    public void checkDirection(int goalX, int goalY, int rangeX, int rangeY) {
+        // init direction
+        next_x_direction = 0;
+        next_y_direction = 0;
+
+        if (goalX - x_chic > rangeX)  next_x_direction = 1;
+        if (goalX - x_chic < -rangeX)  next_x_direction = -1;
+        if (goalY - y_chic > rangeY)  next_y_direction = 1;
+        if (goalY - y_chic < -rangeY)  next_y_direction = -1;
+
+        // horizontally flip the img base on the direction
+        if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
+    }
+
+    public void randomDirection(boolean randX, boolean randY) {
+        // init direction
+        next_x_direction = 0;
+        next_y_direction = 0;
+
+        // constrain chic walking area, if chic is out of range, then change direction
+        if (randX) {
+            next_x_direction = new Random().nextInt(3) + -1;
+            if (x_chic > 300) next_x_direction = -1;
+            if (x_chic < 30) next_x_direction = 1;
+        }
+
+        if (randY) {
+            next_y_direction = new Random().nextInt(3) + -1;
+            if (y_chic > 160) next_y_direction = -1;
+            if (y_chic < 30) next_y_direction = 1;
+        }
+
+        // horizontally flip the img based on direction
+        if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
     }
 
     @Override

@@ -139,6 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/gray_ground_img"
         app:layout_constraintEnd_toEndOf="@+id/main_screen"
         app:layout_constraintStart_toStartOf="@+id/main_screen">
@@ -191,12 +192,18 @@
         app:layout_constraintTop_toTopOf="@+id/gray_ground_img"
         app:layout_constraintBottom_toBottomOf="@+id/gray_ground_img" >
 
-        <!-- add child view’s here -->
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/chic"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/chic_walking_animation" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/heart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/heart_animation"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

@@ -136,9 +136,9 @@ public class HomeFragment extends Fragment {
 
                             if (food_linearLayout.getVisibility() == View.INVISIBLE) {
                                 switch (food_selected){
-                                    case "branch":
+                                    case "wheat":
                                         for (ImageView food: foods) {
-                                            food.setImageResource(R.drawable.ic_branch);
+                                            food.setImageResource(R.drawable.ic_wheat);
                                             food.setColorFilter(getResources().getColor(R.color.wheat));
                                         }
                                         break;

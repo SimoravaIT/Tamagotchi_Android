@@ -62,13 +62,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 maxWidth = happiness_progressbar_cont.getMeasuredWidth();
+                TextView happinessBar =(TextView) root.findViewById(R.id.happiness_progressBar);
+                ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
+                double currentWidth=(maxWidth/100.0)*pet.getHappiness();
+                lp.width=(int)currentWidth;
+                happinessBar.setLayoutParams(lp);
             }});
-
-        TextView happinessBar =(TextView) root.findViewById(R.id.happiness_progressBar);
-        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
-        double currentWidth=(maxWidth/100.0)*pet.getHappiness();
-        lp.width=(int)currentWidth;
-        happinessBar.setLayoutParams(lp);
 
         TextView homeCoins = (TextView) root.findViewById(R.id.coin_home);
         homeCoins.setText(String.valueOf(user.getMoney()));

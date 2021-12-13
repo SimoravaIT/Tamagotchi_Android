@@ -158,8 +158,6 @@ public class HomeFragment extends Fragment {
                                 area.addView(chic, lp_bird);
                             } else {
                                 chic.setImageResource(R.drawable.chic_eating_animation);
-//                                area.removeAllViews();
-//                                area.addView(chic, lp_bird);
                                 chic_state = "eating";
                             }
                         } else if (chic_state == "eating") {
@@ -172,9 +170,6 @@ public class HomeFragment extends Fragment {
                                 if (x_chic < 30) next_x_direction = 1;
                                 if (next_x_direction != 0) chic.setScaleX(-next_x_direction);
                                 chic.setImageResource(R.drawable.chic_walking_animation);
-//                                area.removeAllViews();
-//                                area.addView(heart, lp_bird);
-//                                area.addView(chic, lp_bird);
                             } else if (animation_frame < 3 && next_x_direction != 0) {
                                 x_chic += next_x_direction*5;
                                 lp_bird.leftMargin = x_chic;
@@ -186,9 +181,6 @@ public class HomeFragment extends Fragment {
 
                             } else if (animation_frame == 3) {
                                 chic.setImageResource(R.drawable.chic_eating_animation);
-//                                area.removeAllViews();
-//                                area.addView(heart, lp_bird);
-//                                area.addView(chic, lp_bird);
                             } else if (animation_frame > 3) {
                                 heart.setVisibility(View.VISIBLE);
                                 food_group.setAlpha((float)(food_group.getAlpha()*0.99));

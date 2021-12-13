@@ -53,7 +53,6 @@ public class ReportFragment extends Fragment {
                 fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
             }
         });
 
@@ -66,7 +65,6 @@ public class ReportFragment extends Fragment {
                 fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
             }
         });
 

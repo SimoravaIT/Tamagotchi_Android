@@ -328,7 +328,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         return dates.size();
     }
 
-    public List<Food> loadFoodList(Context context) {
+    public static List<Food> loadFoodList(Context context) {
         // Returns the list of food
         List<Food> foodList = new LinkedList<Food>();
 

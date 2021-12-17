@@ -7,7 +7,7 @@
     tools:context=".ui.tasks.TasksFragment">
 
     <TextView
-        android:id="@+id/textList"
+        android:id="@+id/totalCoinsOnTasks"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -32,7 +32,7 @@
         android:id="@+id/ListView_tasks"
         android:layout_width="330dp"
         android:layout_height="365dp"
-        android:layout_below="@+id/textList"
+        android:layout_below="@+id/totalCoinsOnTasks"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textList" />
+        app:layout_constraintTop_toBottomOf="@+id/totalCoinsOnTasks" />
 
 <!--    <Button-->
 <!--        android:id="@+id/button_populate"-->

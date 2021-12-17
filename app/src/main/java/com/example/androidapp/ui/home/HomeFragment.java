@@ -11,26 +11,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import pl.droidsonroids.gif.GifImageView;
 
 import com.example.androidapp.DatabaseController;
+import com.example.androidapp.Food;
 import com.example.androidapp.MainActivity;
 import com.example.androidapp.Pet;
 import com.example.androidapp.R;
+import com.example.androidapp.ShopController;
 import com.example.androidapp.User;
 import com.example.androidapp.databinding.FragmentHomeBinding;
 import com.example.androidapp.sensors.SensorController;
+import com.example.androidapp.ui.report.DailyStepsFragment;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,18 +48,31 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private RelativeLayout chic_walking_area;
+
+    private GifImageView chic;
+    private TextView homeCoins;
+    private int x_chic, y_chic;
+    private int next_x_direction, next_y_direction;
+
     private GifImageView chic, heart;
     private LinearLayout food_linearLayout;
     private ArrayList<ImageView> foods;
     private RelativeLayout.LayoutParams lp_chic, lp_heart;
     private int x_chic, y_chic, next_x_direction, next_y_direction;
+
     private int animation_frame, animation_frameSet_size;
     private String chic_state, food_selected;
 
 
     private TextView happiness_progressbar_cont;
     private static int maxWidth;
-  
+
+    private static List<Food> foodList;
+    private static TextView item_food1;
+    private static TextView item_food2;
+    private static TextView item_food3;
+    private ShopController shop;
+    private  User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +83,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         if(MainActivity.sensorController==null){
-            MainActivity.sensorController = new SensorController(getContext());
+                MainActivity.sensorController = new SensorController(getContext());
         }
 
 
@@ -78,7 +99,7 @@ public class HomeFragment extends Fragment {
 
 
         Pet pet =DatabaseController.loadPet(getContext());
-        User user= DatabaseController.loadUser(getContext());
+        user= DatabaseController.loadUser(getContext());
 
         happiness_progressbar_cont = (TextView) root.findViewById(R.id.happiness_progressBar_container);
         happiness_progressbar_cont.post(new Runnable() {
@@ -93,7 +114,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        TextView homeCoins = (TextView) root.findViewById(R.id.coin_home);
+        homeCoins = (TextView) root.findViewById(R.id.coin_home);
         homeCoins.setText(String.valueOf(user.getMoney()));
 
         // Screen Relativelayout and Chic GitImageView
@@ -102,6 +123,55 @@ public class HomeFragment extends Fragment {
 
         // start the animation
         startAnimation();
+
+
+        shop= new ShopController(getContext());
+        foodList=DatabaseController.loadFoodList(getContext());
+        TextView item_food1 = (TextView) root.findViewById(R.id.shop_item_1);
+        TextView item_food2 = (TextView) root.findViewById(R.id.shop_item_2);
+        TextView item_food3 = (TextView) root.findViewById(R.id.shop_item_3);
+
+        item_food1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shop.buy(getContext(),foodList.get(0))==null){
+                    Toast.makeText(getActivity(),"Not enough money for: "+foodList.get(0).getName(),Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+                    user=DatabaseController.loadUser(getContext());
+                    homeCoins.setText(String.valueOf(user.getMoney()));
+                }
+            }
+        });
+
+        item_food2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shop.buy(getContext(),foodList.get(1))==null){
+                    Toast.makeText(getActivity(),"Not enough money for: "+foodList.get(1).getName(),Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+                    user=DatabaseController.loadUser(getContext());
+                    homeCoins.setText(String.valueOf(user.getMoney()));
+                }
+            }
+        });
+
+        item_food3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if(shop.buy(getContext(),foodList.get(2))==null){
+                   Toast.makeText(getActivity(),"Not enough money for: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+               }
+               else{
+                   Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+                   user=DatabaseController.loadUser(getContext());
+                   homeCoins.setText(String.valueOf(user.getMoney()));
+               }
+            }
+        });
 
         return root;
     }

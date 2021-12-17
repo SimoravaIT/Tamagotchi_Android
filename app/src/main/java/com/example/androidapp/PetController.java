@@ -3,6 +3,8 @@ package com.example.androidapp;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.androidapp.ui.home.HomeFragment;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +27,7 @@ public class PetController {
 
         pet.setHappiness(newHappiness);
         DatabaseController.updatePet(context, pet);
+        HomeFragment.updateHappinessBar(pet);
     }
 
     public static void decreaseHappiness(Context context) {
@@ -48,6 +51,7 @@ public class PetController {
             }
             pet.setHappiness(newHappiness);
             DatabaseController.updatePet(context, pet);
+            HomeFragment.updateHappinessBar(pet);
         }
     }
 }

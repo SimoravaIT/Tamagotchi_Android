@@ -19,15 +19,16 @@ public class ShopController {
             // Update user's wallet
             user.setMoney(wallet - price);
             DatabaseController.updateUser(context, user);
-            // TODO: call the 'eat' method
+            eat(context, food);
             return food;
         } else {
             return null;
         }
     }
 
-    public void eat(Food food) {
+    private void eat(Context context, Food food) {
         // Update pet's happiness level according to the food given in input
+        PetController.increaseHappiness(context, food.getHappinessLevel());
     }
 
     private boolean hasEnoughMoney(int wallet, int price) {

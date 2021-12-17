@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.example.androidapp.PetController;
 import com.example.androidapp.R;
 import com.example.androidapp.Task;
 import com.example.androidapp.TaskController;
+import com.example.androidapp.User;
 import com.example.androidapp.databinding.FragmentTasksBinding;
 import com.example.androidapp.ui.TasksAdapter;
 
@@ -59,6 +61,10 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
         PetController pt = new PetController();
         pt.decreaseHappiness(getContext());
+
+        User user =DatabaseController.loadUser(getContext());
+        TextView totalCoins = (TextView) root.findViewById(R.id.totalCoinsOnTasks);
+        totalCoins.setText(String.valueOf(user.getMoney()));
 
         return root;
     }

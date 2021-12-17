@@ -333,7 +333,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         return dates.size();
     }
 
-    public List<Food> loadFoodList(Context context) {
+    public static List<Food> loadFoodList(Context context) {
         // Returns the list of food
         List<Food> foodList = new LinkedList<Food>();
 
@@ -444,13 +444,12 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         // Insert data about food
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (0, 'Banana', '15', '15')");
+                "VALUES (0, 'Wheat', '5', '5')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (1, 'Steak', '50', '50')");
+                "VALUES (1, 'worm ', '10', '10')");
         db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (2, 'Milk', '10', '10')");
-        db.execSQL("INSERT INTO Food ('key', 'name', 'happinessLevel', 'price') " +
-                "VALUES (3, 'Salad', '5', '5')");
+                "VALUES (2, 'lettuce', '25', '25')");
+
 
         // Insert the pet
         // TODO: User must choose the name of the pet!

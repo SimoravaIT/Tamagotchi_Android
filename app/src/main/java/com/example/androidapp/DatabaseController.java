@@ -369,7 +369,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         Pet pet = null;
         try {
             pet = new Pet(cursor.getInt(0), cursor.getString(1),
-                    cursor.getInt(2), new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(cursor.getString(3)));
+                    cursor.getInt(2), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").parse(cursor.getString(3)));
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -49,10 +49,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private RelativeLayout chic_walking_area;
 
-    private GifImageView chic;
     private TextView homeCoins;
-    private int x_chic, y_chic;
-    private int next_x_direction, next_y_direction;
 
     private GifImageView chic, heart;
     private LinearLayout food_linearLayout;

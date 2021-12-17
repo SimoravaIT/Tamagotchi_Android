@@ -6,7 +6,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.ui.report.ReportFragment;
@@ -98,8 +97,8 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
                 if (forwardSlope < 0 && downwardSlope > 0 && dataPointList.get(i) > stepThreshold) {
                     mACCStepCounter += 1;
                     ReportFragment.showDailySteps(mACCStepCounter);
+                    ReportFragment.showWeeklySteps(SensorController.getWeeklySteps(context));
                     ReportFragment.showMonthlySteps(SensorController.getMonthlySteps(context));
-                    ReportFragment.showTotalSteps(SensorController.getTotalSteps(context));
                     DatabaseController.insertStep(timePointList.get(i), day, hour, this.context);
                 }
             }

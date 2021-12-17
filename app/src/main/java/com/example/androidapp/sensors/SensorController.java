@@ -9,12 +9,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import androidx.core.math.MathUtils;
+
 import com.example.androidapp.DatabaseController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class SensorController {
@@ -61,10 +64,24 @@ public class SensorController {
         jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
-        Log.d("DATES","range searched->  "+dateStart+"  to  "+dateEnd);
-        return DatabaseController.loadStepsBetweenDates(context,dateStart,dateEnd);
+
+        Map<String,Integer> temp = DatabaseController.loadStepsByDates(context,dateStart,dateEnd);
+        return temp.values().stream().mapToInt(Integer::intValue).sum();
     }
+
     public static int getTotalSteps(Context context){
         return DatabaseController.loadCountTotalSteps(context);
+    }
+
+    public static int getWeeklySteps(Context context) {
+        long timeInMillis1 = System.currentTimeMillis();
+        long timeInMillis2 = System.currentTimeMillis()-(long)7*1000*60*60*24;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
+        String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
+
+        Map<String,Integer> temp = DatabaseController.loadStepsByDates(context,dateStart,dateEnd);
+        return temp.values().stream().mapToInt(Integer::intValue).sum();
     }
 }

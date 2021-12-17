@@ -11,7 +11,7 @@ public class PetController {
 
     public PetController() { }
 
-    public void increaseHappiness(Context context, int level) {
+    public static void increaseHappiness(Context context, int level) {
         // Increase the happiness of the pet by doing activities like (physically) walking
         // or (virtually) feeding the pet.
         Pet pet = DatabaseController.loadPet(context);
@@ -24,13 +24,10 @@ public class PetController {
         }
 
         pet.setHappiness(newHappiness);
-        Date now = Calendar.getInstance().getTime();
-        pet.setLastUpdate(now);
-
         DatabaseController.updatePet(context, pet);
     }
 
-    public void decreaseHappiness(Context context) {
+    public static void decreaseHappiness(Context context) {
         // Decrease the happiness every 4 hours from the last activity performed (eat, go out, etc)
         Pet pet = DatabaseController.loadPet(context);
 
@@ -42,7 +39,9 @@ public class PetController {
         long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
 
         if (diffInHours >= 4) {
-            int multiplier = (int) (4 * (diffInHours/4));
+            // Every 4 hours, happiness is decreased by 2.
+            // So 50h of inactivity (a little bit more that 2 days) in order to finish the happiness.
+            int multiplier = (int) (2 * (diffInHours/4));
             int newHappiness = pet.getHappiness() - multiplier;
             if (newHappiness < 0) {
                 newHappiness = 0;   // minimum happiness is 0

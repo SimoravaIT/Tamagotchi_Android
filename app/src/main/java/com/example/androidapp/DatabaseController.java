@@ -11,10 +11,12 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -351,11 +353,15 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     public static void updatePet(Context context, Pet pet) {
         // Update the pet happiness
+        long timeInMillis = System.currentTimeMillis();
+        SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        String now = jdf.format(timeInMillis);
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("happiness", pet.getHappiness());
-        cv.put("lastUpdate", String.valueOf(Calendar.getInstance().getTime()));
+        cv.put("lastUpdate", now);
         database.update("Pet", cv,"key=?", new String[]{String.valueOf(pet.getKey())});
     }
 
@@ -380,7 +386,7 @@ public class DatabaseController extends SQLiteOpenHelper {
                 "('key' INTEGER PRIMARY KEY, 'name' TEXT, sicknessLevel INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_MEDICINE = "CREATE TABLE AvailableMedicine " +
                 "('key' INTEGER PRIMARY KEY, 'medicine.key' INTEGER, FOREIGN KEY ('key') REFERENCES Medicine('medicine.key'));";
-        String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER, 'lastUpdate' TIMESTAMP);";
+        String CREATE_PET = "CREATE TABLE Pet ('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happiness' INTEGER, 'lastUpdate' TEXT);";
 
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_STEP);
@@ -419,8 +425,12 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         // Insert the pet
         // TODO: User must choose the name of the pet!
-        db.execSQL("INSERT INTO Pet ('key', 'name', 'happiness') " +
-                "VALUES (0, 'Colombo', 70)");
+        long timeInMillis = System.currentTimeMillis();
+        SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        String now = jdf.format(timeInMillis);
+        db.execSQL("INSERT INTO Pet ('key', 'name', 'happiness', 'lastUpdate') " +
+                "VALUES (0, 'Colombo', 70, '"+now+"')");
     }
 
     @Override

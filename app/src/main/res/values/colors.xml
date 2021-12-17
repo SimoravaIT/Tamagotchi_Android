@@ -11,5 +11,8 @@
 
     <color name="primary_blue">#74c5d6</color>
     <color name="accent_pink">#da0a95</color>
+    <color name="wheat">#DC8354</color>
+    <color name="worm">#C64D38</color>
+    <color name="lettuce">#bbda88</color>
 
 </resources>

@@ -63,14 +63,13 @@ public class HomeFragment extends Fragment {
 
     private TextView happiness_progressbar_cont;
     private static int maxWidth;
-
+    private static TextView happinessBar;
     private static List<Food> foodList;
     private static TextView item_food1;
     private static TextView item_food2;
     private static TextView item_food3;
     private ShopController shop;
     private  User user;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -104,7 +103,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 maxWidth = happiness_progressbar_cont.getMeasuredWidth();
-                TextView happinessBar =(TextView) root.findViewById(R.id.happiness_progressBar);
+                happinessBar =(TextView) root.findViewById(R.id.happiness_progressBar);
                 ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
                 double currentWidth=(maxWidth/100.0)*pet.getHappiness();
                 lp.width=(int)currentWidth;
@@ -136,7 +135,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(),"Not enough money for: "+foodList.get(0).getName(),Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(0).getName(),Toast.LENGTH_SHORT).show();
                     user=DatabaseController.loadUser(getContext());
                     homeCoins.setText(String.valueOf(user.getMoney()));
                 }
@@ -150,7 +149,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(),"Not enough money for: "+foodList.get(1).getName(),Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(1).getName(),Toast.LENGTH_SHORT).show();
                     user=DatabaseController.loadUser(getContext());
                     homeCoins.setText(String.valueOf(user.getMoney()));
                 }
@@ -174,10 +173,12 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    public static void updateHappinessBar(Pet pet){
 
-    public static void temperatureChanged(float temperature) {
-
-        //TODO:use the float temperature received to change the background
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
+        double currentWidth=(maxWidth/100.0)*pet.getHappiness();
+        lp.width=(int)currentWidth;
+        happinessBar.setLayoutParams(lp);
     }
 
     public void startAnimation() {

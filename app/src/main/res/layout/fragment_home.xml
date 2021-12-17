@@ -28,7 +28,6 @@
         android:id="@+id/egg_home"
         android:layout_width="450dp"
         android:layout_height="540dp"
-
         android:layout_marginBottom="96dp"
         android:src="@drawable/ic_egg"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +94,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/happiness_progressbar_container"
-        android:drawableTop="@drawable/ic_branch"
+        android:drawableTop="@drawable/ic_wheat"
         android:gravity="center"
 
         android:paddingVertical="10dp"
@@ -134,6 +133,56 @@
         app:layout_constraintEnd_toEndOf="@+id/main_screen"
         app:layout_constraintTop_toBottomOf="@+id/gray_ground_img" />
 
+    <LinearLayout
+        android:id="@+id/food_linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gray_ground_img"
+        app:layout_constraintEnd_toEndOf="@+id/main_screen"
+        app:layout_constraintStart_toStartOf="@+id/main_screen">
+
+        <ImageView
+            android:id="@+id/food_selected_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_wheat"
+            app:tint="@color/wheat" />
+
+        <ImageView
+            android:id="@+id/food_selected_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/ic_wheat"
+            app:tint="@color/wheat" />
+
+        <ImageView
+            android:id="@+id/food_selected_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_wheat"
+            app:tint="@color/wheat" />
+
+        <ImageView
+            android:id="@+id/food_selected_4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/ic_wheat"
+            app:tint="@color/wheat" />
+
+        <ImageView
+            android:id="@+id/food_selected_5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_wheat"
+            app:tint="@color/wheat" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/relative_screen_layout"
         android:layout_width="195dp"
@@ -143,12 +192,18 @@
         app:layout_constraintTop_toTopOf="@+id/gray_ground_img"
         app:layout_constraintBottom_toBottomOf="@+id/gray_ground_img" >
 
-        <!-- add child view’s here -->
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/chic"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/chic_walking_animation" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/heart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/heart_animation"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

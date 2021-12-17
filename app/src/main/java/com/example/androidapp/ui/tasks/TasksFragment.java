@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.example.androidapp.DatabaseController;
 import com.example.androidapp.R;
 import com.example.androidapp.Task;
 import com.example.androidapp.TaskController;
+import com.example.androidapp.User;
 import com.example.androidapp.databinding.FragmentTasksBinding;
 import com.example.androidapp.ui.TasksAdapter;
 
@@ -55,6 +57,11 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         array_list_tasks.addAll(tasksList);
         TasksAdapter adapter = new TasksAdapter(getActivity(),array_list_tasks);
         myListView.setAdapter(adapter);
+
+        User user =DatabaseController.loadUser(getContext());
+        TextView totalCoins = (TextView) root.findViewById(R.id.totalCoinsOnTasks);
+        totalCoins.setText(String.valueOf(user.getMoney()));
+
 
         return root;
     }

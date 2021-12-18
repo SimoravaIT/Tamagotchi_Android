@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="48dp"
         android:drawableLeft="@drawable/ic_coin_32dp"
         android:drawablePadding="10dp"
@@ -204,6 +204,14 @@
             android:layout_height="50dp"
             android:src="@drawable/heart_animation"
             android:visibility="invisible" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/weather"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="-10dp"
+            android:src="@drawable/normal_animation" />
 
     </RelativeLayout>
 

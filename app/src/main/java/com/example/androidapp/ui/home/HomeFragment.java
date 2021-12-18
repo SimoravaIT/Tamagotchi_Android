@@ -47,11 +47,11 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private RelativeLayout chic_walking_area;
 
     private TextView homeCoins;
 
     private GifImageView chic, heart;
+    private static GifImageView weather;
     private LinearLayout food_linearLayout;
     private ArrayList<ImageView> foods;
     private RelativeLayout.LayoutParams lp_chic, lp_heart;
@@ -59,7 +59,6 @@ public class HomeFragment extends Fragment {
 
     private int animation_frame, animation_frameSet_size;
     private String chic_state, food_selected;
-
 
     private TextView happiness_progressbar_cont;
     private static int maxWidth;
@@ -69,7 +68,8 @@ public class HomeFragment extends Fragment {
     private static TextView item_food2;
     private static TextView item_food3;
     private ShopController shop;
-    private  User user;
+    private User user;
+    private Pet pet;
 
 
 
@@ -87,28 +87,27 @@ public class HomeFragment extends Fragment {
 
 
         // layout, view, img init
-        chic_walking_area = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
         chic = (GifImageView) root.findViewById(R.id.chic);
         heart = (GifImageView) root.findViewById(R.id.heart);
+        weather = (GifImageView) root.findViewById(R.id.weather);
         food_linearLayout = (LinearLayout) root.findViewById(R.id.food_linearLayout);
         foods = new ArrayList<ImageView>();
         for(int i = 0; i < 5; i++) foods.add((ImageView) food_linearLayout.getChildAt(i));
         lp_chic = new RelativeLayout.LayoutParams(160, 160);
         lp_heart = new RelativeLayout.LayoutParams(120, 120);
 
-
-        Pet pet =DatabaseController.loadPet(getContext());
-        user= DatabaseController.loadUser(getContext());
+        pet = DatabaseController.loadPet(getContext());
+        user = DatabaseController.loadUser(getContext());
 
         happiness_progressbar_cont = (TextView) root.findViewById(R.id.happiness_progressBar_container);
         happiness_progressbar_cont.post(new Runnable() {
             @Override
             public void run() {
                 maxWidth = happiness_progressbar_cont.getMeasuredWidth();
-                happinessBar =(TextView) root.findViewById(R.id.happiness_progressBar);
+                happinessBar = (TextView) root.findViewById(R.id.happiness_progressBar);
                 ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
-                double currentWidth=(maxWidth/100.0)*pet.getHappiness();
-                lp.width=(int)currentWidth;
+                double currentWidth = (maxWidth/100.0)*pet.getHappiness();
+                lp.width = (int)currentWidth;
                 happinessBar.setLayoutParams(lp);
             }
         });
@@ -116,19 +115,14 @@ public class HomeFragment extends Fragment {
         homeCoins = (TextView) root.findViewById(R.id.coin_home);
         homeCoins.setText(String.valueOf(user.getMoney()));
 
-        // Screen Relativelayout and Chic GitImageView
-        chic_walking_area = (RelativeLayout) root.findViewById(R.id.relative_screen_layout);
-        chic = (GifImageView) root.findViewById(R.id.chic);
-
         // start the animation
         startAnimation();
 
-
-        shop= new ShopController(getContext());
-        foodList=DatabaseController.loadFoodList(getContext());
-        TextView item_food1 = (TextView) root.findViewById(R.id.shop_item_1);
-        TextView item_food2 = (TextView) root.findViewById(R.id.shop_item_2);
-        TextView item_food3 = (TextView) root.findViewById(R.id.shop_item_3);
+        shop = new ShopController(getContext());
+        foodList = DatabaseController.loadFoodList(getContext());
+        item_food1 = (TextView) root.findViewById(R.id.shop_item_1);
+        item_food2 = (TextView) root.findViewById(R.id.shop_item_2);
+        item_food3 = (TextView) root.findViewById(R.id.shop_item_3);
 
         item_food1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +134,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(0).getName(),Toast.LENGTH_SHORT).show();
                     user=DatabaseController.loadUser(getContext());
                     homeCoins.setText(String.valueOf(user.getMoney()));
+                    feedingAnimation("wheat");
                 }
             }
         });
@@ -154,6 +149,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(1).getName(),Toast.LENGTH_SHORT).show();
                     user=DatabaseController.loadUser(getContext());
                     homeCoins.setText(String.valueOf(user.getMoney()));
+                    feedingAnimation("worm");
                 }
             }
         });
@@ -168,6 +164,7 @@ public class HomeFragment extends Fragment {
                    Toast.makeText(getActivity(),"Successfully bought: "+foodList.get(2).getName(),Toast.LENGTH_SHORT).show();
                    user=DatabaseController.loadUser(getContext());
                    homeCoins.setText(String.valueOf(user.getMoney()));
+                   feedingAnimation("lettuce");
                }
             }
         });
@@ -176,19 +173,20 @@ public class HomeFragment extends Fragment {
     }
 
     public static void temperatureChanged(float value) {
-        //TODO: change the backgraund based on the gave temperature
        if(value<1.0){
+           weather.setImageResource(R.drawable.snow_animation);
            Log.d("TEMPERATURE","temperature changed now is cold:"+value);
         }
-       else if(value>15){
+       else if(value<15){
+           weather.setImageResource(R.drawable.normal_animation);
            Log.d("TEMPERATURE","temperature changed range now is hot :"+value);
        }
        else{
+           weather.setImageResource(R.drawable.sunny_animation);
            Log.d("TEMPERATURE","temperature changed range now is normal :"+value);
        }
     }
     public static void updateHappinessBar(Pet pet){
-
         ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();
         double currentWidth=(maxWidth/100.0)*pet.getHappiness();
         lp.width=(int)currentWidth;
@@ -345,7 +343,7 @@ public class HomeFragment extends Fragment {
         if (randY) {
             next_y_direction = new Random().nextInt(3) + -1;
             if (y_chic > 160) next_y_direction = -1;
-            if (y_chic < 30) next_y_direction = 1;
+            if (y_chic < 140) next_y_direction = 1;
         }
 
         // horizontally flip the img based on direction

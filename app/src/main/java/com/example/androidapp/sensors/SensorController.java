@@ -25,26 +25,38 @@ public class SensorController {
 
     public SensorController(Context context) {
 
-        Log.d("STEPSENSOR: ", "sensor controller created");
         SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         Sensor mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         Sensor mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        Sensor mSensorTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
-        SensorEventListener listener = new StepCounterListener(context);
+        SensorEventListener stepListener = new StepCounterListener(context);
         if (mSensorACC != null) {
-            Log.d("STEPSENSOR: ", "mSensorACC not null");
-            mSensorManager.registerListener(listener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
+            Log.d("SENSOR: ", "mSensorACC not null");
+            mSensorManager.registerListener(stepListener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
-            Log.d("STEPSENSOR: ", "mSensorACC not  found");
+            Log.d("SENSOR: ", "mSensorACC not  found");
         }
 
         if (mSensorStepDetector != null) {
-            Log.d("STEPSENSOR: ", "mSensorStepDetector not null");
-            mSensorManager.registerListener(listener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
+            Log.d("SENSOR: ", "mSensorStepDetector not null");
+            mSensorManager.registerListener(stepListener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
-            Log.d("STEPSENSOR: ", "mSensorStepDetector not found");
+            Log.d("SENSOR: ", "mSensorStepDetector not found");
         }
+
+        SensorEventListener tempListener = new TemperatureListener(context);
+        if(mSensorTemperature!=null){
+            Log.d("SENSOR: ", "mSensorTemperature is not null");
+            mSensorManager.registerListener(tempListener, mSensorTemperature, SensorManager.SENSOR_DELAY_NORMAL);
+        } else{
+            Log.d("SENSOR: ", "mSensorTemperature not  found");
+        }
+
+
     }
+
+
 
     public static int getDailySteps(Context context){
 

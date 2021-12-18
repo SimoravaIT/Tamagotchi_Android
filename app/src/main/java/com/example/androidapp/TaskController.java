@@ -2,6 +2,7 @@ package com.example.androidapp;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,10 +37,13 @@ public class TaskController {
         }
     }
 
-    public boolean completeTasks(Context context) {
+    public List<Task> completeTasks(Context context) {
         // Check if the user completed any task correctly and delete it from AvailableTask.
         List<Task> atasks = DatabaseController.loadAvailableTasks(context);
-
+        Log.d("lista", "dopo load: "+atasks);
+        for (Task t : atasks){
+            Log.d("lista", "task"+t+"completed? ->"+t.isCompleted());
+        }
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String today = df.format(c);
@@ -50,15 +54,16 @@ public class TaskController {
             if (atasks.get(i).getNumSteps() > 0) {
                 // Task is about completing number of steps
                 if (taskIsCompleted(atasks.get(i).getNumSteps(), todaySteps)) {
-                    collectReward(context, atasks.get(i));
                     DatabaseController.completeAvailableTask(context, atasks.get(i).getKey());
-                    completed = true;
+                    Task temp=atasks.get(i);
+                    temp.setCompleted(true);
+                   // atasks.set(i,temp);
                 }
             } else {
                 // Task is about something else
             }
         }
-        return completed;
+        return atasks;
     }
 
     private boolean taskIsCompleted(int req, int state) {
@@ -71,7 +76,7 @@ public class TaskController {
         }
     }
 
-    private void collectReward(Context context, Task task) {
+    public static void collectReward(Context context, Task task) {
         // Allocate money in the user's wallet according to the task.
         User user = DatabaseController.loadUser(context);
         int oldMoney = user.getMoney();

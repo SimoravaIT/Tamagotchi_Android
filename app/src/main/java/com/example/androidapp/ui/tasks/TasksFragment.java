@@ -29,7 +29,7 @@ import java.util.List;
 
 public class TasksFragment extends Fragment implements AdapterView.OnItemClickListener{
 
-
+    public static TextView totalCoins;
     private FragmentTasksBinding binding;
     List<Task> tasksList;
 
@@ -49,13 +49,14 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
         TaskController tc = new TaskController(root.getContext());
 
-        // A nice addition here would be to add the evident option to refresh this check,
-        // like a refresh button on the UI or the 'pull to refresh' functionality.
-        tc.completeTasks(root.getContext()); // this returns a boolean so if it is true, notify the user on the UI
 
-        tasksList = databaseHelper.loadAvailableTasks(root.getContext());
+        tasksList=tc.completeTasks(root.getContext());
+       // tc.completeTasks(root.getContext()); // this returns a boolean so if it is true, notify the user on the UI
+       // tasksList = databaseHelper.loadAvailableTasks(root.getContext());
+        //og.d("lista","in task fragment"+tasksList);
         ArrayList<Task> array_list_tasks=new ArrayList<>();
         array_list_tasks.addAll(tasksList);
+
         TasksAdapter adapter = new TasksAdapter(getActivity(),array_list_tasks);
         myListView.setAdapter(adapter);
 
@@ -63,7 +64,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         pt.decreaseHappiness(getContext());
 
         User user =DatabaseController.loadUser(getContext());
-        TextView totalCoins = (TextView) root.findViewById(R.id.totalCoinsOnTasks);
+        totalCoins = (TextView) root.findViewById(R.id.totalCoinsOnTasks);
         totalCoins.setText(String.valueOf(user.getMoney()));
 
         return root;
@@ -78,10 +79,14 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
        Task selected_task= tasksList.get(position);
-
-        if(selected_task.isCompleted()==false)
+        if(!selected_task.isCompleted())
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(getActivity(),"You earn " + selected_task.getReward() + "coins",Toast.LENGTH_SHORT).show();
+        else {
+            Toast.makeText(getActivity(), "You earn " + selected_task.getReward() + "coins", Toast.LENGTH_SHORT).show();
+            TaskController.collectReward(getContext(), selected_task);
+            User user = DatabaseController.loadUser(getContext());
+            totalCoins.setText(String.valueOf(user.getMoney()));
+
+        }
     }
 }

@@ -71,6 +71,8 @@ public class HomeFragment extends Fragment {
     private ShopController shop;
     private  User user;
 
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if (container != null) {
@@ -173,6 +175,18 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    public static void temperatureChanged(float value) {
+        //TODO: change the backgraund based on the gave temperature
+       if(value<1.0){
+           Log.d("TEMPERATURE","temperature changed now is cold:"+value);
+        }
+       else if(value>15){
+           Log.d("TEMPERATURE","temperature changed range now is hot :"+value);
+       }
+       else{
+           Log.d("TEMPERATURE","temperature changed range now is normal :"+value);
+       }
+    }
     public static void updateHappinessBar(Pet pet){
 
         ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) happinessBar.getLayoutParams();

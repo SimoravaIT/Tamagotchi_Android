@@ -48,12 +48,9 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         myListView.setOnItemClickListener(this);
 
         TaskController tc = new TaskController(root.getContext());
-
-
+        //take the  list of task with the completed and the not completed
         tasksList=tc.completeTasks(root.getContext());
-       // tc.completeTasks(root.getContext()); // this returns a boolean so if it is true, notify the user on the UI
-       // tasksList = databaseHelper.loadAvailableTasks(root.getContext());
-        //og.d("lista","in task fragment"+tasksList);
+
         ArrayList<Task> array_list_tasks=new ArrayList<>();
         array_list_tasks.addAll(tasksList);
 
@@ -82,6 +79,7 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         if(!selected_task.isCompleted())
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
         else {
+            //do something if the cliccked task is completed
             Toast.makeText(getActivity(), "You earn " + selected_task.getReward() + "coins", Toast.LENGTH_SHORT).show();
             TaskController.collectReward(getContext(), selected_task);
             User user = DatabaseController.loadUser(getContext());

@@ -40,10 +40,6 @@ public class TaskController {
     public List<Task> completeTasks(Context context) {
         // Check if the user completed any task correctly and delete it from AvailableTask.
         List<Task> atasks = DatabaseController.loadAvailableTasks(context);
-        Log.d("lista", "dopo load: "+atasks);
-        for (Task t : atasks){
-            Log.d("lista", "task"+t+"completed? ->"+t.isCompleted());
-        }
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String today = df.format(c);

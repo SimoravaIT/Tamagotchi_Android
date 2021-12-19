@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 public class TaskController {
 
@@ -21,7 +23,7 @@ public class TaskController {
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         List<Task> availableTasks = DatabaseController.loadAvailableTasks(context);
-        if (availableTasks.size() < 3) {
+        if (availableTasks.size() < 3 && !hasBeenUpdatedToday(context)) {
             generateTasks(context);
         }
     }
@@ -103,5 +105,25 @@ public class TaskController {
         }
 
         return tasks;
+    }
+
+    private boolean hasBeenUpdatedToday(Context context) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date lastUpdate = null;
+        Date today = null;
+        try {
+            lastUpdate = sdf.parse(DatabaseController.loadLastTaskGeneration(context));
+            today = sdf.parse(String.valueOf(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.d("DATE", String.valueOf(lastUpdate));
+        Log.d("DATE", String.valueOf(today));
+        long diffInMillies = Math.abs(today.getTime() - lastUpdate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        if (diff >= 1) {
+            return true;
+        }
+        return false;
     }
 }

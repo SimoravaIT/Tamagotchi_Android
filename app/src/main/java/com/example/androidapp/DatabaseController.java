@@ -140,12 +140,40 @@ public class DatabaseController extends SQLiteOpenHelper {
     }
 
     public static void deleteAvailableTasks(Context context) {
-        // Dump the entire AvailableTask table.
+        // Delete the entire AvailableTask entries in the table.
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
+    }
+
+    public static String loadLastTaskGeneration(Context context) {
+        // Returns the date of when the available tasks was updated the last time.
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        Cursor cursor = database.query("LastTaskGeneration", null, null, null, null,
+                null, null );
+
+        cursor.moveToFirst();
+        String lastUpdate = cursor.getString(0);
+
+        cursor.close();
+        database.close();
+
+        return lastUpdate;
+    }
+
+    public static void updateLastTaskGeneration(Context context) {
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String today = (sdf.format(new Date()));
+        Log.d("DATE", today);
+        ContentValues cv = new ContentValues();
+        cv.put("lastUpdate", today);
+        database.update("LastTaskGeneration", cv,"key=?", new String[]{String.valueOf(0)});
     }
 
     public static User loadUser(Context context) {
@@ -407,6 +435,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         // https://stackoverflow.com/questions/18746149/android-sqlite-selection-args-with-int-values
         String CREATE_AVAILABLE_TASK = "CREATE TABLE AvailableTask " +
                 "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, 'completed' TEXT, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
+        String CREATE_LAST_TASK_GENERATION = "CREATE TABLE LastTaskGeneration ('key' INTEGER PRIMARY KEY, 'lastGeneration' TEXT);";
         String CREATE_FOOD = "CREATE TABLE Food " +
                 "('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happinessLevel' INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_FOOD = "CREATE TABLE AvailableFood " +
@@ -421,6 +450,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL(CREATE_STEP);
         db.execSQL(CREATE_TASK);
         db.execSQL(CREATE_AVAILABLE_TASK);
+        db.execSQL(CREATE_LAST_TASK_GENERATION);
         db.execSQL(CREATE_FOOD);
         db.execSQL(CREATE_AVAILABLE_FOOD);
         db.execSQL(CREATE_MEDICINE);

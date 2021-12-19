@@ -108,11 +108,10 @@ public class DatabaseController extends SQLiteOpenHelper {
                 null, null );
 
         cursor.moveToFirst();
-        for(int i=0; i < cursor.getCount(); i++){
+        for (int i=0; i < cursor.getCount(); i++) {
             tasks.add(loadSingleTask(context, cursor.getInt(1)));
             cursor.moveToNext();
         }
-
         database.close();
         cursor.close();
 
@@ -124,8 +123,8 @@ public class DatabaseController extends SQLiteOpenHelper {
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
 
-        database.execSQL("INSERT INTO AvailableTask ('key', 'completed', 'task.key') " +
-                "VALUES ("+task.getKey()+", 0, (SELECT key FROM Task WHERE key="+task.getKey()+"))");
+        database.execSQL("INSERT INTO AvailableTask ('completed', 'task_key') " +
+                "VALUES (0, (SELECT key FROM Task WHERE key="+task.getKey()+"))");
     }
 
     public static void completeAvailableTask(Context context, String id) {
@@ -136,16 +135,43 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put("completed", 1);
-        database.update("AvailableTask", cv,"key=?", new String[]{id});
+        database.update("AvailableTask", cv,"task_key=?", new String[]{id});
     }
 
     public static void deleteAvailableTasks(Context context) {
-        // Dump the entire AvailableTask table.
+        // Delete the entire AvailableTask entries in the table.
         DatabaseController databaseHelper = new DatabaseController(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int numberDeletedRecords = database.delete("AvailableTask", null, null);
         database.close();
+    }
+
+    public static String loadLastTaskGeneration(Context context) {
+        // Returns the date of when the available tasks was updated the last time.
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        Cursor cursor = database.query("LastTaskGeneration", null, null, null, null,
+                null, null );
+
+        cursor.moveToFirst();
+        String lastUpdate = cursor.getString(1);
+        Log.d("LAST UPDATE", lastUpdate);
+        cursor.close();
+        database.close();
+
+        return lastUpdate;
+    }
+
+    public static void updateLastTaskGeneration(Context context) {
+        DatabaseController databaseHelper = new DatabaseController(context);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String today = (sdf.format(new Date()));
+        ContentValues cv = new ContentValues();
+        cv.put("lastGeneration", today);
+        database.update("LastTaskGeneration", cv,"key=?", new String[]{String.valueOf(0)});
     }
 
     public static User loadUser(Context context) {
@@ -406,7 +432,8 @@ public class DatabaseController extends SQLiteOpenHelper {
         // "completed" here must be of type TEXT because then it cannot be parametrized in the queries
         // https://stackoverflow.com/questions/18746149/android-sqlite-selection-args-with-int-values
         String CREATE_AVAILABLE_TASK = "CREATE TABLE AvailableTask " +
-                "('key' INTEGER PRIMARY KEY, 'task.key' INTEGER, 'completed' TEXT, FOREIGN KEY ('key') REFERENCES Task('task.key'));";
+                "('key' INTEGER PRIMARY KEY AUTOINCREMENT, 'task_key' INTEGER, 'completed' TEXT, FOREIGN KEY ('key') REFERENCES Task('task_key'));";
+        String CREATE_LAST_TASK_GENERATION = "CREATE TABLE LastTaskGeneration ('key' INTEGER PRIMARY KEY, 'lastGeneration' TEXT);";
         String CREATE_FOOD = "CREATE TABLE Food " +
                 "('key' INTEGER PRIMARY KEY, 'name' TEXT, 'happinessLevel' INTEGER, 'price' INTEGER);";
         String CREATE_AVAILABLE_FOOD = "CREATE TABLE AvailableFood " +
@@ -421,6 +448,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         db.execSQL(CREATE_STEP);
         db.execSQL(CREATE_TASK);
         db.execSQL(CREATE_AVAILABLE_TASK);
+        db.execSQL(CREATE_LAST_TASK_GENERATION);
         db.execSQL(CREATE_FOOD);
         db.execSQL(CREATE_AVAILABLE_FOOD);
         db.execSQL(CREATE_MEDICINE);
@@ -459,6 +487,9 @@ public class DatabaseController extends SQLiteOpenHelper {
         String now = jdf.format(timeInMillis);
         db.execSQL("INSERT INTO Pet ('key', 'name', 'happiness', 'lastUpdate') " +
                 "VALUES (0, 'Colombo', 70, '"+now+"')");
+
+        db.execSQL("INSERT INTO LastTaskGeneration ('key', 'lastGeneration') " +
+                "VALUES (0, '')");
     }
 
     @Override

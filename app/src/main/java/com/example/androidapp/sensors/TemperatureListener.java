@@ -16,7 +16,6 @@ public class TemperatureListener implements SensorEventListener {
     }
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        Log.d("SENSOR","registered temp= "+sensorEvent.values[0]);
         HomeFragment.temperatureChanged(sensorEvent.values[0]);
     }
 

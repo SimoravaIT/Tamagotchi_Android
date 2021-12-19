@@ -31,8 +31,10 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     public static TextView totalCoins;
     private FragmentTasksBinding binding;
-    List<Task> tasksList;
-
+    public TasksAdapter adapter;
+    public TaskController tc;
+    public ListView myListView;
+    public ArrayList<Task> array_list_tasks;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if (container != null) {
@@ -44,16 +46,13 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
         DatabaseController databaseHelper = new DatabaseController(root.getContext());
 
         //listView definition
-        final ListView myListView = (ListView) root.findViewById(R.id.ListView_tasks);
+        myListView = (ListView) root.findViewById(R.id.ListView_tasks);
         myListView.setOnItemClickListener(this);
 
-        TaskController tc = new TaskController(root.getContext());
-
-        ArrayList<Task> array_list_tasks=new ArrayList<>();
-        tasksList = DatabaseController.loadAvailableTasks(getContext());
-        array_list_tasks.addAll(tasksList);
-
-        TasksAdapter adapter = new TasksAdapter(getActivity(),array_list_tasks);
+        tc = new TaskController(root.getContext());
+        array_list_tasks=new ArrayList<>();
+        array_list_tasks.addAll(tc.updatedAvailableTasks);
+        adapter = new TasksAdapter(getActivity(),array_list_tasks);
         myListView.setAdapter(adapter);
 
         PetController pt = new PetController();
@@ -74,16 +73,16 @@ public class TasksFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       Task selected_task= tasksList.get(position);
+       Task selected_task= tc.updatedAvailableTasks.get(position);
         if(!selected_task.isCompleted())
             Toast.makeText(getActivity(),"This task still need to be completed",Toast.LENGTH_SHORT).show();
         else {
-            //do something if the clicked task is completed
             Toast.makeText(getActivity(), "You earn " + selected_task.getReward() + "coins", Toast.LENGTH_SHORT).show();
             TaskController.collectReward(getContext(), selected_task);
             User user = DatabaseController.loadUser(getContext());
             totalCoins.setText(String.valueOf(user.getMoney()));
-
+            adapter.remove(selected_task);
+            adapter.notifyDataSetChanged();
         }
     }
 }

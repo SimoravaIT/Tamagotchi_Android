@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskController {
     List<Task> availableTasks;
-    List<Task> updatedAvailableTasks;
+    public List<Task> updatedAvailableTasks;
     List<Task> newAvailableTasks;
 
     public TaskController(Context context){

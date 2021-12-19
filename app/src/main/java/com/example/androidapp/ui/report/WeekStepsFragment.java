@@ -78,7 +78,7 @@ public class WeekStepsFragment extends Fragment {
         long timeInMillis1 = System.currentTimeMillis();
         long timeInMillis2 = System.currentTimeMillis()-(long)7*1000*60*60*24;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);
 

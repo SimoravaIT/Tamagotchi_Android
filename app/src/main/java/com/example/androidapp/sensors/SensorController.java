@@ -57,10 +57,7 @@ public class SensorController {
 
     }
 
-
-
     public static int getDailySteps(Context context){
-
         Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));

@@ -175,15 +175,12 @@ public class HomeFragment extends Fragment {
     public static void temperatureChanged(float value) {
        if(value<1.0){
            weather.setImageResource(R.drawable.snow_animation);
-           Log.d("TEMPERATURE","temperature changed now is cold:"+value);
         }
        else if(value<15){
            weather.setImageResource(R.drawable.normal_animation);
-           Log.d("TEMPERATURE","temperature changed range now is hot :"+value);
        }
        else{
            weather.setImageResource(R.drawable.sunny_animation);
-           Log.d("TEMPERATURE","temperature changed range now is normal :"+value);
        }
     }
     public static void updateHappinessBar(Pet pet){

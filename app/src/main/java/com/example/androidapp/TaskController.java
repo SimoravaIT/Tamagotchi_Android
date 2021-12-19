@@ -31,12 +31,11 @@ public class TaskController {
     public static void generateTasks(Context context) {
         // Take randomly n tasks from the db and put them in the AvailableTask table.
         DatabaseController.deleteAvailableTasks(context);
-
         List<Task> tasks = generateRandomTasks(context);
-
         for (int i=0; i < tasks.size(); i++) {
             DatabaseController.insertAvailableTask(context, tasks.get(i));
         }
+        DatabaseController.updateLastTaskGeneration(context);
     }
 
     public List<Task> completeTasks(Context context) {
@@ -115,10 +114,8 @@ public class TaskController {
             lastUpdate = sdf.parse(DatabaseController.loadLastTaskGeneration(context));
             today = sdf.parse(String.valueOf(new Date()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            return false;
         }
-        Log.d("DATE", String.valueOf(lastUpdate));
-        Log.d("DATE", String.valueOf(today));
         long diffInMillies = Math.abs(today.getTime() - lastUpdate.getTime());
         long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
         if (diff >= 1) {

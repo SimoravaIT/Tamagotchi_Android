@@ -170,9 +170,8 @@ public class DatabaseController extends SQLiteOpenHelper {
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String today = (sdf.format(new Date()));
-        Log.d("DATE", today);
         ContentValues cv = new ContentValues();
-        cv.put("lastUpdate", today);
+        cv.put("lastGeneration", today);
         database.update("LastTaskGeneration", cv,"key=?", new String[]{String.valueOf(0)});
     }
 
@@ -489,6 +488,12 @@ public class DatabaseController extends SQLiteOpenHelper {
         String now = jdf.format(timeInMillis);
         db.execSQL("INSERT INTO Pet ('key', 'name', 'happiness', 'lastUpdate') " +
                 "VALUES (0, 'Colombo', 70, '"+now+"')");
+
+        //jdf = new SimpleDateFormat("yyyy-MM-dd");
+        //jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        //String today = jdf.format(timeInMillis);
+        db.execSQL("INSERT INTO LastTaskGeneration ('key', 'lastGeneration') " +
+                "VALUES (0, '')");
     }
 
     @Override

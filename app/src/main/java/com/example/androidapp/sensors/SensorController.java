@@ -31,18 +31,19 @@ public class SensorController {
         Sensor mSensorTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
         SensorEventListener stepListener = new StepCounterListener(context);
-        if (mSensorACC != null) {
-            Log.d("SENSOR: ", "mSensorACC not null");
-            mSensorManager.registerListener(stepListener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            Log.d("SENSOR: ", "mSensorACC not  found");
-        }
+
 
         if (mSensorStepDetector != null) {
             Log.d("SENSOR: ", "mSensorStepDetector not null");
             mSensorManager.registerListener(stepListener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             Log.d("SENSOR: ", "mSensorStepDetector not found");
+            if (mSensorACC != null) {
+                Log.d("SENSOR: ", "mSensorACC not null");
+                mSensorManager.registerListener(stepListener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                Log.d("SENSOR: ", "mSensorACC not  found");
+            }
         }
 
         SensorEventListener tempListener = new TemperatureListener(context);
@@ -62,7 +63,7 @@ public class SensorController {
 
         Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String fDate = formatter.format(calendar.getTime());
 
         stepsCompleted=DatabaseController.loadStepsForTheDay(context, fDate);
@@ -73,7 +74,7 @@ public class SensorController {
         long timeInMillis1 = System.currentTimeMillis();
         long timeInMillis2 = System.currentTimeMillis()-(long)30*1000*60*60*24;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
 
@@ -89,10 +90,9 @@ public class SensorController {
         long timeInMillis1 = System.currentTimeMillis();
         long timeInMillis2 = System.currentTimeMillis()-(long)7*1000*60*60*24;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String dateEnd = jdf.format(timeInMillis1).substring(0, 10);;
         String dateStart = jdf.format(timeInMillis2).substring(0, 10);;
-
         Map<String,Integer> temp = DatabaseController.loadStepsByDates(context,dateStart,dateEnd);
         return temp.values().stream().mapToInt(Integer::intValue).sum();
     }

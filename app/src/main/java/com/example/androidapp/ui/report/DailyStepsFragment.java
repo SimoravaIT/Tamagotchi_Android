@@ -55,7 +55,7 @@ public class DailyStepsFragment extends Fragment {
 
         Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String fDate = formatter.format(calendar.getTime());
 
         anyChartView = root.findViewById(R.id.hourBarChart);
@@ -88,7 +88,7 @@ public class DailyStepsFragment extends Fragment {
 
         Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         String fDate = formatter.format(calendar.getTime());
         stepsByHour=DatabaseController.loadStepsByHours(getContext(),fDate);
         Map<Integer, Integer> graph_map = new TreeMap<>();

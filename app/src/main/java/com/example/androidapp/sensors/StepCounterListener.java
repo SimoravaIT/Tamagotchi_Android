@@ -6,10 +6,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.example.androidapp.DatabaseController;
 import com.example.androidapp.ui.report.ReportFragment;
 
+import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,6 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
     ArrayList<String> mTimeSeries = new ArrayList<String>();
     private int lastXPoint = 1;
     int stepThreshold = 10;
-    public int mAndroidStepCounter = 0;
     public String timestamp;
     public String day;
     public String hour;
@@ -45,7 +46,7 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
                 float z = event.values[2];
                 long timeInMillis = System.currentTimeMillis() + (event.timestamp - SystemClock.elapsedRealtimeNanos()) / 1000000;
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-                jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+                jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
                 String date = jdf.format(timeInMillis);
                 timestamp = date;
                 day = date.substring(0, 10);
@@ -57,7 +58,7 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
                 break;
 
             case Sensor.TYPE_STEP_DETECTOR:
-                countSteps(event.values[0]);
+                countSteps(event.values[0],event.timestamp);
         }
     }
 
@@ -104,7 +105,14 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
             }
         }
     }
-    private void countSteps(float step) {
-        mAndroidStepCounter += (int) step;
+    private void countSteps(float step, long time) {
+        long timeInMillis = System.currentTimeMillis() + (time - SystemClock.elapsedRealtimeNanos()) / 1000000;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        String date = jdf.format(timeInMillis);
+        timestamp = date;
+        day = date.substring(0, 10);
+        hour = date.substring(11, 13);
+        DatabaseController.insertStep(timestamp, day, hour, this.context);
     }
 }

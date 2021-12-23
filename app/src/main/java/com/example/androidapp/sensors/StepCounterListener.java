@@ -114,5 +114,9 @@ class StepCounterListener<stepsCompleted> implements SensorEventListener {
         day = date.substring(0, 10);
         hour = date.substring(11, 13);
         DatabaseController.insertStep(timestamp, day, hour, this.context);
+        mACCStepCounter+=1;
+        ReportFragment.showDailySteps(mACCStepCounter);
+        ReportFragment.showWeeklySteps(SensorController.getWeeklySteps(context));
+        ReportFragment.showMonthlySteps(SensorController.getMonthlySteps(context));
     }
 }

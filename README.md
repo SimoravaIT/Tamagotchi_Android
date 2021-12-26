@@ -9,3 +9,8 @@ Project documentation:
 - Use Cases: https://docs.google.com/document/d/1q3z7-pgtNzUfUcgdNjd3fZ4lXCzkfFlnH-tYDO32yrg/edit#
 - Classes: https://docs.google.com/document/d/1w96ox5bgitDBacboANfRnLGBr9FOAX_LuEG5YEF0-34/edit
 - Project Plan: https://docs.google.com/document/d/1n3kXcbqwUKl4QfeYvLCcB0WnCuPXZetrWR70JYju-Bg/edit#
+
+Authors:
+- Edoardo Gabrielli: https://github.com/edogab33
+- Yuanjen Hung: https://github.com/YuanjenHung
+- Simone Rava: https://github.com/SimoravaIT

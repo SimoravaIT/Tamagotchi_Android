@@ -7,6 +7,8 @@ It requires API 26 Android 8.0 (Oreo) as minimum SDK.
 
 You can see the demo here: https://drive.google.com/file/d/1ZHe5iyftGzubVsTnxmkco9nxsyOFFGO8/view?usp=sharing
 
+... and the slides of the presentation here of course: https://drive.google.com/file/d/1wtw6UMuqPgEIdZEWMyckfwDNVjwDMXOU/view?usp=sharing
+
 Project documentation:
 - Use Cases: https://docs.google.com/document/d/1q3z7-pgtNzUfUcgdNjd3fZ4lXCzkfFlnH-tYDO32yrg/edit#
 - Classes: https://docs.google.com/document/d/1w96ox5bgitDBacboANfRnLGBr9FOAX_LuEG5YEF0-34/edit

@@ -1,6 +1,9 @@
 # Tamagotchi_Android
 An android project developed in java by studio404 group.
 ---
+
+![demogif](https://user-images.githubusercontent.com/12884117/148686402-0aa55826-193c-441c-bdb7-d8d941b0281c.gif)
+
 This is the project for Mobile and Wearable Computing class and consists of a version of the well known Tamagotchi in combination with physical activity in order to collect coins and increase the pet's happiness.
 
 It requires API 26 Android 8.0 (Oreo) as minimum SDK.
